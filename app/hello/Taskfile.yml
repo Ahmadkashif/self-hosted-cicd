@@ -1,0 +1,56 @@
+# The CHECK CONTRACT for this repo (task NAMES are the blueprint contract; the commands are Go-specific).
+# Called by: Claude Code hooks (L0, .claude/hooks/agent-gate.sh), prek pre-commit/pre-push (L1/L2),
+# Forgejo CI (L3, .forgejo/workflows/pipeline.yml) and the release job (L4).
+# Tools on PATH: go, task, gitleaks, actionlint, docker (buildx) — all in the ci-base image.
+version: "3"
+
+vars:
+  BASE_REF: '{{.BASE_REF | default "origin/main"}}'
+  IMAGE: '{{.IMAGE | default "hello:ci"}}'
+  VERSION: '{{.VERSION | default "dev"}}'
+
+tasks:
+  # ---------- L0: agent loop (< 60 s) ----------
+  check:fast:
+    desc: Fast gate for AI agents before they say "done" (format, vet, unit tests)
+    cmds:
+      - 'out="$(gofmt -l .)"; [ -z "$out" ] || { echo "gofmt needed:"; echo "$out"; exit 1; }'
+      - go vet ./...
+      - go test -short -count=1 ./...
+
+  # ---------- L2: pre-push (< 2 min) ----------
+  check:
+    desc: Full local gate (same as CI minus services and image)
+    cmds:
+      - task: check:fast
+      - task: secrets
+      - task: workflows
+
+  secrets:
+    desc: Secret scan of every commit not yet on the base branch (whole history if there is no base yet)
+    cmds:
+      - 'if git rev-parse -q --verify "{{.BASE_REF}}" >/dev/null; then gitleaks git --redact --no-banner --log-opts="{{.BASE_REF}}..HEAD" .; else gitleaks git --redact --no-banner .; fi'
+
+  workflows:
+    desc: Lint CI definitions (self-hosted labels declared in .github/actionlint.yaml)
+    cmds:
+      # explicit config: actionlint only auto-discovers it for .github/workflows, not .forgejo/workflows
+      - actionlint -config-file .github/actionlint.yaml .forgejo/workflows/*.yml
+
+  test:integration:
+    desc: Integration tests against Postgres (needs DATABASE_URL; CI provides a `services:` postgres)
+    cmds:
+      - go test -tags integration -count=1 ./...
+
+  # ---------- L3: server CI (< 10 min) ----------
+  ci:
+    desc: Everything the server gate runs
+    cmds:
+      - task: check
+      - task: test:integration
+      - task: image
+
+  image:
+    desc: Build the container image (no push)
+    cmds:
+      - docker buildx build --pull --load --build-arg VERSION={{.VERSION}} -t {{.IMAGE}} .

@@ -1,0 +1,4 @@
+# Self-hosted runner labels used by .forgejo/workflows (Forgejo lanes) and .github/workflows (hybrid GitHub lane).
+# Pass it explicitly (actionlint -config-file ...): it is only auto-discovered for .github/workflows.
+self-hosted-runner:
+  labels: [ci, deploy, home]

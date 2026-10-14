@@ -1,0 +1,22 @@
+$ forgejo --version
+forgejo version 15.0.10+gitea-1.22.0 (release name 15.0.10) built with GNU Make 4.4.1, go1.26.9 : bindata, timetzdata, sqlite, sqlite_unlock_notify
+postgres (PostgreSQL) 17.11 (Debian 17.11-1.pgdg13+2)
+v2.11.7 h1:yj0Y4fYZGPkSvibBJ1sTWE33xC0fxztVyXEW5iIdUT4=
+registry github.com/distribution/distribution/v3 3.1.2
+$ forgejo admin user create --admin --username forgeadmin ...
+New user 'forgeadmin' has been successfully created!
+$ caddy validate --config /etc/caddy/Caddyfile
+{"level":"info","ts":1791992296.5191202,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0xb3f215e2000"}
+Valid configuration
+$ app.ini effective settings
+DEFAULT_PRIVATE = private
+ROOT_URL = https://git.lab.test/
+DB_TYPE = postgres
+INSTALL_LOCK = true
+DISABLE_REGISTRATION = true
+REQUIRE_SIGNIN_VIEW = true
+ENABLED = true
+DEFAULT_ACTIONS_URL = https://data.forgejo.org
+ENABLED = true
+subject=CN = Caddy Local Authority - 2026 ECC Root
+notAfter=Aug 22 15:37:23 2036 GMT

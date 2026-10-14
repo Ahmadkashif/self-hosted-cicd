@@ -1,0 +1,134 @@
+# Runner VM — Forgejo runners (ci + deploy lanes) and optional GitHub hybrid lane, each with its OWN
+# Docker-in-Docker daemon. TEMPLATE ONLY — not deployed by this research.
+#
+# WHY A VM: docker:dind needs `privileged: true` (even the rootless variant). That is root on whatever runs it,
+# so this whole file must run inside a disposable VM (Incus/KVM/Proxmox/Lima) on its own VLAN/bridge, never on
+# the forge host or your workstation. Egress policy: nftables.conf.tmpl.
+#
+# Lanes:
+#   ci      — pull_request / branch jobs. Holds NO secrets. `runs-on: ci`.
+#   deploy  — jobs on protected main / tags only (by workflow convention). Holds registry + deploy creds.
+#             Separate dockerd so a PR job can never poison the image cache used for release builds.
+#   github  — (profile "github") dockerd for ephemeral GitHub Actions runners started by systemd/gh-runner@.service.
+#
+#   docker compose --env-file ../build/<profile>/runner-vm.env up -d          # ci + deploy
+#   COMPOSE_PROFILES=github docker compose --env-file ... up -d             # + GitHub lane dockerd
+name: ci-runner
+
+x-runner: &runner
+  image: data.forgejo.org/forgejo/runner:${RUNNER_TAG}
+  restart: unless-stopped
+  user: "1000:1000"                            # image default (runner v13.2.0 Dockerfile: USER 1000:1000)
+  working_dir: /data
+  command: ["forgejo-runner", "daemon", "--config", "/data/config.yml"]
+  security_opt: ["no-new-privileges:true"]
+  environment: &runner-env
+    CREDENTIALS_DIRECTORY: /run/secrets        # config.yml reads token_url: file:$CREDENTIALS_DIRECTORY/<name>
+    # The job images (CI_IMAGE/DEPLOY_IMAGE) are private forge packages: the runner pulls them with the docker
+    # config.json in ./secrets/registry-pull/ (a bot PAT with read:package ONLY; jobs never see it).
+    DOCKER_CONFIG: /run/registry-pull
+    # TLS option (c) (Caddy `tls internal`): add `-f compose.tls-internal.yaml`, which trusts the forge CA
+    # IN ADDITION to the system roots (SSL_CERT_DIR). SSL_CERT_FILE would REPLACE the system roots and break
+    # fetching actions from data.forgejo.org.
+  mem_limit: 256m
+
+x-dind: &dind
+  image: docker:${DIND_TAG}                    # runner v13 requires Docker >= 25; 28-dind is frozen since 2025-11, use 29
+  restart: unless-stopped
+  privileged: true                             # acceptable ONLY because this runs inside the runner VM
+  command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false", "--config-file=/etc/docker/daemon.json"]
+  healthcheck:                                 # runners wait for this (they exit if dockerd is not up yet)
+    test: ["CMD", "docker", "-H", "tcp://127.0.0.1:2375", "version"]
+    interval: 5s
+    timeout: 5s
+    retries: 20
+
+services:
+  # ---------------- ci lane ----------------
+  dind-ci:
+    <<: *dind
+    mem_limit: ${DIND_CI_MEM_LIMIT}            # = CI_SLOTS x CI_SLOT_MEM_GB + 0.5 GB (computed by render.py)
+    cpus: ${DIND_CI_CPUS}
+    volumes:
+      - dind-ci:/var/lib/docker
+      - ../build/${PROFILE}/dind-daemon.json:/etc/docker/daemon.json:ro
+    networks:
+      ci: { ipv4_address: 172.30.10.2 }
+
+  runner-ci:
+    <<: *runner
+    environment:
+      <<: *runner-env
+      DOCKER_HOST: tcp://172.30.10.2:2375
+    volumes:
+      - ./data/runner-ci:/data                   # chown -R 1000:1000 ./data (runner image uid)
+      - ../build/${PROFILE}/runner-ci.yaml:/data/config.yml:ro
+      - ./secrets/registry-pull:/run/registry-pull:ro
+    secrets: [forgejo_runner_ci_token]
+    depends_on:
+      dind-ci: { condition: service_healthy }
+    networks:
+      ci: { ipv4_address: 172.30.10.10 }      # fixed: job containers reach the cache proxy on this IP
+
+  # ---------------- deploy lane ----------------
+  dind-deploy:
+    <<: *dind
+    mem_limit: ${DIND_DEPLOY_MEM_LIMIT}
+    cpus: ${DIND_DEPLOY_CPUS}
+    volumes:
+      - dind-deploy:/var/lib/docker
+      - ../build/${PROFILE}/dind-daemon.json:/etc/docker/daemon.json:ro
+    networks:
+      deploy: { ipv4_address: 172.30.20.2 }
+
+  runner-deploy:
+    <<: *runner
+    environment:
+      <<: *runner-env
+      DOCKER_HOST: tcp://172.30.20.2:2375
+    volumes:
+      - ./data/runner-deploy:/data
+      - ../build/${PROFILE}/runner-deploy.yaml:/data/config.yml:ro
+      - ./secrets/registry-pull:/run/registry-pull:ro
+    secrets: [forgejo_runner_deploy_token]
+    depends_on:
+      dind-deploy: { condition: service_healthy }
+    networks:
+      deploy: { ipv4_address: 172.30.20.10 }
+
+  # ---------------- GitHub hybrid lane (optional) ----------------
+  dind-github:
+    <<: *dind
+    profiles: ["github"]
+    mem_limit: ${DIND_GITHUB_MEM_LIMIT}
+    cpus: ${DIND_GITHUB_CPUS}
+    volumes:
+      - dind-github:/var/lib/docker
+      - gh-work:/_work                         # same path as in the runner containers (container actions need it)
+      # runner externals (node for JS actions, mounted into container jobs as /__e) at the runner's own path;
+      # seeded per image version by gh-runner@.service (fix 2026-09-22, see ../phase-6/synthesis.md §4)
+      - gh-externals:/actions-runner/externals:ro
+      - ../build/${PROFILE}/dind-daemon.json:/etc/docker/daemon.json:ro
+    networks:
+      github: { ipv4_address: 172.30.30.2 }
+
+secrets:
+  forgejo_runner_ci_token:
+    file: ./secrets/forgejo_runner_ci_token      # 40-hex secret used with `forgejo-cli actions register` (0600)
+  forgejo_runner_deploy_token:
+    file: ./secrets/forgejo_runner_deploy_token
+
+volumes:
+  dind-ci: {}
+  dind-deploy: {}
+  dind-github: {}
+  gh-work: {}
+  gh-externals: {}
+
+networks:
+  ci:
+    ipam: { config: [ { subnet: 172.30.10.0/24 } ] }
+  deploy:
+    ipam: { config: [ { subnet: 172.30.20.0/24 } ] }
+  github:
+    ipam: { config: [ { subnet: 172.30.30.0/24 } ] }

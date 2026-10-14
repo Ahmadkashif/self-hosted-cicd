@@ -1,0 +1,36 @@
+$ python3 render.py small --out /tmp/x
+profile=small site=site.env.example
+  runner VM RAM needed (1 GB base + slots)                      8.00 /    8.00
+  host RAM needed (OS+forge+db+mirror+edge+VM+apps+CD)         13.25 /   16.00
+  host disk needed (forge/packages + runner VM + mirror [+ target])  320.00 /  512.00
+note: forge-host/compose.yaml expects from a secrets env file: ['FORGEJO_DB_PASSWORD']
+rendered 8 files -> /tmp/tmp.2qajCAzgaV/small; syntax errors: 0
+exit=0
+$ python3 render.py medium --out /tmp/x
+profile=medium site=site.env.example
+  runner VM RAM needed (1 GB base + slots)                     16.00 /   16.00
+  host RAM needed (OS+forge+db+mirror+edge+VM+apps+CD)         27.50 /   32.00
+  host disk needed (forge/packages + runner VM + mirror [+ target])  470.00 / 1000.00
+note: forge-host/compose.yaml expects from a secrets env file: ['FORGEJO_DB_PASSWORD']
+rendered 8 files -> /tmp/tmp.J5MyB5mp1Z/medium; syntax errors: 0
+exit=0
+$ python3 render.py large --out /tmp/x
+profile=large site=site.env.example
+  runner VM RAM needed (1 GB base + slots)                     39.00 /   39.00
+  host RAM needed (OS+forge+db+mirror+edge+VM+apps+CD)         54.00 /   64.00
+  host disk needed (forge/packages + runner VM + mirror [+ target])  770.00 / 2000.00
+note: forge-host/compose.yaml expects from a secrets env file: ['FORGEJO_DB_PASSWORD']
+rendered 8 files -> /tmp/tmp.5YWtt45CcQ/large; syntax errors: 0
+exit=0
+$ python3 render.py shared-verify --site ../lab/site.lab.env --host ../proof-linux/q01-host-fit/host.env
+profile=shared-verify site=site.lab.env
+  runner VM RAM needed (1 GB base + slots)                      6.00 /    6.00
+  forge VM RAM needed (OS+forge+db+mirror+edge+docker)          2.88 /    3.00
+  host RAM needed (forge VM + runner VM + target VM + apps)    10.25 /   12.00
+  host disk needed (forge/packages + runner VM + mirror [+ target])   90.00 /  100.00
+    vs. RAM available now (detect-host: total - co-tenants)    10.25 /   18.80
+    vs. free threads now (detect-host: threads - load)          7.00 /   15.00
+    vs. free disk now                                          90.00 /  802.00
+note: forge-host/compose.yaml expects from a secrets env file: ['FORGEJO_DB_PASSWORD']
+rendered 8 files -> <home>/Desktop/code/research-facility/research/self-hosted-cicd/phase-5/build/shared-verify; syntax errors: 0
+exit=0

@@ -1,0 +1,37 @@
+# Woodpecker v3 pipeline — same Taskfile contract, different YAML dialect (no GitHub Actions support).
+when:
+  - event: pull_request
+  - event: push
+    branch: main
+
+services:
+  - name: postgres
+    image: postgres:17
+    environment:
+      POSTGRES_PASSWORD: ci-only-not-a-secret
+      POSTGRES_DB: app_test
+
+steps:
+  - name: ci
+    image: git.home.example/infra/ci-base:2026.09@sha256:REPLACE_WITH_DIGEST
+    environment:
+      BASE_REF: origin/main
+      DATABASE_URL: postgres://postgres:ci-only-not-a-secret@postgres:5432/app_test
+    commands:
+      - git fetch --no-tags origin main
+      - task ci BASE_REF="$BASE_REF"
+
+  - name: release
+    image: git.home.example/infra/deploy-base:2026.09@sha256:REPLACE_WITH_DIGEST
+    when:
+      - event: push
+        branch: main
+    environment:
+      KAMAL_REGISTRY_PASSWORD:
+        from_secret: registry_token          # Woodpecker secrets can be limited to events (push) and images
+      DEPLOY_SSH_KEY:
+        from_secret: deploy_ssh_key
+    commands:
+      - eval "$(ssh-agent -s)" && printf '%s\n' "$DEPLOY_SSH_KEY" | ssh-add -
+      - mkdir -p ~/.ssh && cp config/known_hosts ~/.ssh/known_hosts
+      - kamal deploy --version="$CI_COMMIT_SHA"

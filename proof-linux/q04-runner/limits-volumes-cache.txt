@@ -1,0 +1,18 @@
+=== apps/probe task 42
+⭐ Run Main echo "memory.max=$(cat /sys/fs/cgroup/memory.max) memory.swap.max=$(cat /sys/fs/cgroup/memory.swap.max 2>/dev/null) cpu.max=$(cat /sys/fs/cgroup/cpu.max) pids.max=$(cat /sys/fs/cgroup/pids.max)"\necho "ACTION
+memory.max=3221225472 memory.swap.max=0 cpu.max=200000 100000 pids.max=4096
+ACTIONS_CACHE_URL set: yes
+🏁  Job succeeded
+=== apps/probe task 43
+Runner 00000000-0000-0000-0000-00000000c1c1 (version:v13.2.0) received task 43 of job bind-mount, triggered by event: workflow_dispatch
+Cleaning up network for job bind-mount, and network name is: WORKFLOW-18edf99d11e5d6cf6e37569021db2260
+[/] is not a valid volume, will be ignored
+⭐ Run Main ls /host | head -3 || echo "no /host mount"
+ls: cannot access '/host': No such file or directory
+no /host mount
+🏁  Job succeeded
+=== infra/deploy task 40
+⭐ Run Main echo "memory.max=$(cat /sys/fs/cgroup/memory.max) cpu.max=$(cat /sys/fs/cgroup/cpu.max) pids.max=$(cat /sys/fs/cgroup/pids.max)"\necho "ACTIONS_CACHE_URL set: ${ACTIONS_CACHE_URL:-no (cache disabled on the deploy lane)}"
+memory.max=2147483648 cpu.max=100000 100000 pids.max=4096
+ACTIONS_CACHE_URL set: no (cache disabled on the deploy lane)
+🏁  Job succeeded

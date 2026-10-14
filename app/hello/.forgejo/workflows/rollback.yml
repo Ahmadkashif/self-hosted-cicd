@@ -1,0 +1,28 @@
+# Manual rollback to a version whose container still exists on the hosts (kamal keeps recent ones stopped).
+name: rollback
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "40-char git SHA of a previously deployed version"
+        required: true
+jobs:
+  rollback:
+    runs-on: deploy
+    timeout-minutes: 10
+    env:
+      VERSION: ${{ inputs.version }}             # via env, never interpolated into the script (injection-safe)
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: kamal rollback
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          printf '%s' "$VERSION" | grep -Eq '^[0-9a-f]{40}$' || { echo "bad version"; exit 1; }
+          eval "$(ssh-agent -s)"
+          printf '%s\n' "$DEPLOY_SSH_KEY" | ssh-add -
+          mkdir -p ~/.ssh && cp config/known_hosts ~/.ssh/known_hosts
+          kamal rollback "$VERSION"

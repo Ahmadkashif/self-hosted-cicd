@@ -1,0 +1,16 @@
+$ ./phase-5/detect-host.sh --env proof-linux/q01-host-fit/host.env
+== detect-host (read-only) ==
+os            : Ubuntu 24.04.5 LTS, kernel 7.0.0-34-generic, arch x86_64
+cpu threads   : 16 total, load1 0.42 -> ~15 free
+virtualization: VT-x, /dev/kvm present+usable-by-this-user
+ram           : 31.1 GB total, 18.8 GB available, co-tenant use ~12.3 GB, swap used 4.1 GB
+disk ($HOME) : 802 GB free of 937 GB
+docker        : 29.8.1   (runner v13 needs >= 25 inside the runner VM, not here)
+iptables      : v1.8.10 (nf_tables)
+vm tooling    : none
+co-tenants    : ollama docker docker-containers:1
+busy ports    : none   (blueprint defaults: 443 caddy, 2222 forgejo ssh)
+nominal size  : medium (by totals)
+SUGGESTED     : small (by FREE capacity after co-tenants)
+note: no VM tooling installed; the runner VM needs one (multipass, incus, libvirt) or a QEMU-in-container lab.
+wrote proof-linux/q01-host-fit/host.env

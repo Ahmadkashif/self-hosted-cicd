@@ -1,0 +1,42 @@
+# Kamal 2 — deploys the image the release job built. Used as:  kamal deploy --skip-push --version=<git sha>
+# Kamal SSHes to the hosts, pulls <image>:<version>, starts it, and kamal-proxy only switches traffic once the
+# health check passes (old container keeps serving otherwise). No agent runs on the hosts.
+# The image MUST carry the label service=<service> (the release job adds it); Kamal checks it after the pull.
+# Hosts pull from the forge registry themselves: put them in DEPLOY_TARGETS (Caddy allow-list + runner egress) and,
+# with `tls internal`, install the forge CA in each host's SYSTEM trust store and restart docker.
+service: app
+image: your-org/app                  # combined with registry.server => git.home.example/your-org/app
+
+servers:
+  web:
+    hosts:
+      - 10.10.0.10                   # must be listed in DEPLOY_TARGETS (runner VM egress allow-list)
+
+proxy:
+  host: app.home.example
+  ssl: false                         # LAN: TLS terminated by Caddy in front. Public host: true (Let's Encrypt)
+  app_port: 3000
+  healthcheck:
+    path: /up
+    interval: 3
+    timeout: 3
+
+deploy_timeout: 30                   # seconds kamal-proxy waits for a healthy /up before abandoning the new version
+
+registry:
+  server: git.home.example           # Forgejo's built-in OCI registry
+  username: ci-bot
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+
+env:
+  clear:
+    NODE_ENV: production
+  secret:
+    - DATABASE_URL
+
+ssh:
+  user: deploy                       # member of the docker group on the target (= root-equivalent: dedicate the key)

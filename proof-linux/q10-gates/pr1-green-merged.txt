@@ -1,0 +1,4 @@
+--- PR #1 head status: ["success",["pipeline / ci (pull_request)=success","pipeline / release (pull_request)=success"]]
+$ POST /repos/apps/hello/pulls/1/merge
+HTTP 200
+merged=true main=9f4dae90a1beb2946501dd0f320959c7ff8536ff

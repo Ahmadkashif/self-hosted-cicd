@@ -1,0 +1,35 @@
+# Forgejo Runner v13 config — DEPLOY lane (rendered). Separate registration, separate dockerd.
+# Forgejo has no environment-scoped secrets: any same-repo branch workflow could ask for `runs-on: deploy`.
+# Keep this lane registered ONLY to the repos/org that deploy, and see README §5 "deploy-repo pattern" for
+# the hardened variant where app repos hold no secrets at all.
+log:
+  level: info
+  job_level: info
+
+runner:
+  capacity: ${DEPLOY_SLOTS}
+  timeout: ${JOB_TIMEOUT}
+  shutdown_timeout: 10m
+  envs:
+    # Jobs reach this lane's own dockerd (pattern from Forgejo 'Utilizing Docker within Actions').
+    DOCKER_HOST: tcp://dind.docker.internal:2375
+  labels:
+    - "deploy:docker://${DEPLOY_IMAGE}"          # pinned deploy-base image (docker CLI + buildx + kamal + node; images/deploy-base)
+
+cache:
+  enabled: false                                 # never restore caches written by untrusted lanes
+
+container:
+  network: ""
+  privileged: false
+  options: "--memory=${DEPLOY_SLOT_MEM_GB}g --memory-swap=${DEPLOY_SLOT_MEM_GB}g --cpus=${DEPLOY_SLOT_CPUS} --pids-limit=4096 --add-host=dind.docker.internal:host-gateway"
+  valid_volumes: []
+  docker_host: "-"                               # no socket mount; runner itself talks to dind via DOCKER_HOST env
+  force_pull: true
+
+server:
+  connections:
+    forge:
+      url: https://${FORGE_DOMAIN}/
+      uuid: ${RUNNER_DEPLOY_UUID}                # printed by `forgejo-cli actions register` (site.env; not a secret)
+      token_url: file:$CREDENTIALS_DIRECTORY/forgejo_runner_deploy_token

@@ -1,0 +1,23 @@
+# Can the AUTOMATIC token push packages? (blueprint claim: no -> use a write:package bot PAT)
+name: token-push
+on: [workflow_dispatch]
+jobs:
+  try:
+    runs-on: ci
+    steps:
+      - name: generic package upload with the automatic token
+        env: { TOKEN: "${{ github.token }}" }
+        run: |
+          echo probe > f.txt
+          code=$(curl -sS -o resp.txt -w '%{http_code}' -X PUT -H "Authorization: token $TOKEN" \
+            --upload-file f.txt "${{ github.server_url }}/api/packages/apps/generic/token-probe/1.0.0/f.txt")
+          echo "generic upload with automatic token -> HTTP $code: $(head -c 200 resp.txt)"
+      - name: OCI push with the automatic token
+        env: { TOKEN: "${{ github.token }}" }
+        run: |
+          host="${GITHUB_SERVER_URL#https://}"
+          printf '%s' "$TOKEN" | docker login "$host" -u "$GITHUB_ACTOR" --password-stdin 2>&1 | tail -1 || true
+          printf 'FROM scratch\nCOPY f /f\n' > Dockerfile && echo x > f
+          docker build -q -t "$host/apps/token-probe:1" . >/dev/null
+          docker push "$host/apps/token-probe:1" 2>&1 | tail -2 || true
+          echo "packages now in org apps: $(curl -sS -H "Authorization: token $TOKEN" "${{ github.server_url }}/api/v1/packages/apps" | head -c 300)"

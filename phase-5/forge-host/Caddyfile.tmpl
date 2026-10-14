@@ -1,0 +1,27 @@
+# Rendered from Caddyfile.tmpl. LAN/Tailscale-only edge. `tls internal` uses Caddy's local CA:
+# install its root on your devices and in ci-base/deploy-base images, OR replace with a DNS-01 ACME
+# issuer / `tailscale cert` if you own a real domain.
+{
+	admin off
+}
+
+(allowlist) {
+	# admins + the runner VM subnet + deploy targets (Kamal makes the TARGET pull from the forge registry)
+	@denied not remote_ip ${TRUSTED_ADMIN_SUBNETS} ${RUNNER_SUBNET} ${DEPLOY_TARGETS}
+	respond @denied 403
+}
+
+${FORGE_DOMAIN} {
+	import allowlist
+	tls internal
+	request_body {
+		max_size 2GB
+	}
+	reverse_proxy forgejo:3000
+}
+
+${REGISTRY_MIRROR_DOMAIN} {
+	import allowlist
+	tls internal
+	reverse_proxy registry-mirror:5000
+}

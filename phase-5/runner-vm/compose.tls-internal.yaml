@@ -1,0 +1,23 @@
+# TLS option (c): the forge uses Caddy `tls internal`. Overlay for compose.yaml:
+#   docker compose -f compose.yaml -f compose.tls-internal.yaml --env-file ../build/<p>/runner-vm.env up -d
+# Before: copy the Caddy root CA (forge: data/caddy/pki/authorities/local/root.crt) to ./ca/root.crt and run
+#   ../tls-internal-ca.sh ./ca/root.crt <forge-domain> <mirror-domain>   (creates ./ca/certs.d/<domain>/ca.crt)
+# - runners: trust the CA in addition to the system roots (Go reads every file in each SSL_CERT_DIR entry)
+# - each dind: trust it for the forge registry (job images) and the Docker Hub mirror. certs.d alone is NOT enough on
+#   Docker 29 (containerd image store): the registry token endpoint is verified against the SYSTEM roots, so the
+#   daemon also gets SSL_CERT_DIR (lab finding 2026-10-14; `docker push` failed with x509 unknown authority).
+x-ca-runner: &ca-runner
+  SSL_CERT_DIR: /etc/ssl/certs:/run/ca
+services:
+  runner-ci:
+    environment: *ca-runner
+    volumes: ["./ca/root.crt:/run/ca/root.crt:ro"]
+  runner-deploy:
+    environment: *ca-runner
+    volumes: ["./ca/root.crt:/run/ca/root.crt:ro"]
+  dind-ci:
+    environment: *ca-runner
+    volumes: ["./ca/certs.d:/etc/docker/certs.d:ro", "./ca/root.crt:/run/ca/root.crt:ro"]
+  dind-deploy:
+    environment: *ca-runner
+    volumes: ["./ca/certs.d:/etc/docker/certs.d:ro", "./ca/root.crt:/run/ca/root.crt:ro"]

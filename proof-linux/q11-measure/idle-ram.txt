@@ -1,0 +1,38 @@
+=== idle snapshot 2026-10-14T16:56:03Z (no jobs running)
+--- forge VM: free -m
+               total        used        free      shared  buff/cache   available
+Mem:            2972         658         278          25        2257        2314
+NAME                         MEM USAGE / LIMIT     CPU %
+ci-forge-forgejo-1           193.2MiB / 768MiB     2.08%
+ci-forge-postgres-1          47.39MiB / 384MiB     0.08%
+ci-forge-caddy-1             17.52MiB / 2.903GiB   0.12%
+ci-forge-registry-mirror-1   24.14MiB / 256MiB     0.01%
+--- runner VM: free -m
+               total        used        free      shared  buff/cache   available
+Mem:            5925         856        2142           1        3226        5068
+NAME                        MEM USAGE / LIMIT   CPU %
+ci-runner-runner-deploy-1   10.46MiB / 256MiB   0.00%
+ci-runner-runner-ci-1       32.41MiB / 256MiB   0.48%
+ci-runner-dind-ci-1         658.4MiB / 3.5GiB   0.19%
+ci-runner-dind-deploy-1     230MiB / 2.5GiB     0.21%
+--- target VM: free -m
+               total        used        free      shared  buff/cache   available
+Mem:            1211         406         187           1         778         805
+NAME                                                 MEM USAGE / LIMIT     CPU %
+hello-web-839d8ddbe5a30f9e9e3a2d3a82823633f8358e8b   1.293MiB / 1.184GiB   0.00%
+kamal-proxy                                          4.289MiB / 1.184GiB   0.00%
+--- QEMU processes on the host (RSS, MiB) — what the box actually pays
+sh: 1: arithmetic expression: expecting primary: "  / 1024 "
+--- lab container
+cicd-vmlab 10.43GiB / 31.06GiB 32.85%
+runner VM: QEMU RSS 6192 MiB (allocated 6144 MiB)
+forge VM: QEMU RSS 3118 MiB (allocated 3072 MiB)
+target VM: QEMU RSS 1319 MiB (allocated 1280 MiB)
+               total        used        free      shared  buff/cache   available
+Mem:              31          22           2           0           7           8
+=== runner VM right after recreate (fresh dind, data volumes kept), 2026-10-14T17:07:53Z
+NAME                        MEM USAGE / LIMIT
+ci-runner-runner-ci-1       7.953MiB / 256MiB
+ci-runner-runner-deploy-1   7.941MiB / 256MiB
+ci-runner-dind-ci-1         35.7MiB / 3.5GiB
+ci-runner-dind-deploy-1     29.97MiB / 2.5GiB

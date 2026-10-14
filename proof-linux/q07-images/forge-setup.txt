@@ -1,0 +1,14 @@
+{"org":"infra","visibility":"private"}
+{"org":"apps","visibility":"private"}
+org infra team registry-push id=3 members=ci-bot units={"repo.actions":"read","repo.code":"read","repo.packages":"write"}
+org apps team registry-push id=4 members=ci-bot units={"repo.actions":"read","repo.code":"read","repo.packages":"write"}
+{"name":"app-read","scopes":["read:repository"]}
+{"name":"registry-push","scopes":["write:package"]}
+{"name":"registry-pull","scopes":["read:package"]}
+total 24
+-rw------- admin.pw
+-rw------- admin.token
+-rw------- bot-pkg.token
+-rw------- bot-pull.token
+-rw------- bot-read.token
+-rw------- bot.pw

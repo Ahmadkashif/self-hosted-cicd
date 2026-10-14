@@ -1,0 +1,5 @@
+{"repo":"apps/hello","private":true}
+{"repo":"infra/deploy","private":true}
+$ forgejo forgejo-cli actions register --name runner-ci-shared-verify --scope apps --secret <40-hex from runner VM>
+00000000-0000-0000-0000-00000000c1c1$ forgejo forgejo-cli actions register --name runner-deploy-shared-verify --scope apps/hello --secret <40-hex>
+00000000-0000-0000-0000-00000000d1d1

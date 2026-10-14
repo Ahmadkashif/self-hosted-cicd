@@ -1,0 +1,16 @@
+# CNCF Distribution v3 config — Docker Hub pull-through cache.
+# If you set username/password (a Docker Hub read-only PAT lifts the limit to 200 pulls / 6 h), anything that
+# account can read becomes readable through the mirror — keep the mirror behind the Caddy allow-list.
+version: 0.1
+log:
+  level: info
+storage:
+  filesystem:
+    rootdirectory: /var/lib/registry
+  delete:
+    enabled: true
+http:
+  addr: :5000
+proxy:
+  remoteurl: https://registry-1.docker.io
+  ttl: 168h

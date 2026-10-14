@@ -1,0 +1,485 @@
+2026-10-14T16:01:22.3186027Z Runner 00000000-0000-0000-0000-00000000d1d1 (version:v13.2.0) received task 4 of job release, triggered by event: push
+2026-10-14T16:01:22.3203690Z workflow prepared
+2026-10-14T16:01:22.3260802Z 🚀  Start image=git.lab.test/infra/deploy-base:lab@sha256:45e0ca7a6b398e2cb6bd142eb8e91abe5d3b80187ed4952fe7bb03ece1281492
+2026-10-14T16:01:22.3306230Z using DockerAuthConfig authentication for docker pull
+2026-10-14T16:01:22.3306489Z   🐳  docker pull image=git.lab.test/infra/deploy-base:lab@sha256:45e0ca7a6b398e2cb6bd142eb8e91abe5d3b80187ed4952fe7bb03ece1281492 platform=linux/amd64 username= forcePull=true
+2026-10-14T16:01:50.4488770Z Cleaning up network for job release, and network name is: WORKFLOW-37a2b5c3ca4efa71282d7f81207a19b2
+2026-10-14T16:01:50.6470669Z   🐳  docker create image=git.lab.test/infra/deploy-base:lab@sha256:45e0ca7a6b398e2cb6bd142eb8e91abe5d3b80187ed4952fe7bb03ece1281492 platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-37a2b5c3ca4efa71282d7f81207a19b2"
+2026-10-14T16:01:50.9071230Z   🐳  docker run image=git.lab.test/infra/deploy-base:lab@sha256:45e0ca7a6b398e2cb6bd142eb8e91abe5d3b80187ed4952fe7bb03ece1281492 platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-37a2b5c3ca4efa71282d7f81207a19b2"
+2026-10-14T16:01:51.8340574Z   ☁️  git clone 'https://data.forgejo.org/actions/checkout' # ref=d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T16:01:52.8312565Z   ☁️  git fetch 'https://data.forgejo.org/actions/checkout' # ref=d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T16:01:56.8113797Z ⭐ Run Main actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T16:01:56.8204533Z   🐳  docker cp src=/data/.cache/act/6f/af5fd28547fdfdb5c5204705a1d00e6d07d0d7eb8237301e7845293ba978e0/ dst=/var/run/act/actions/6f/af5fd28547fdfdb5c5204705a1d00e6d07d0d7eb8237301e7845293ba978e0/
+2026-10-14T16:01:57.0315285Z   🐳  docker exec cmd=[node /var/run/act/actions/6f/af5fd28547fdfdb5c5204705a1d00e6d07d0d7eb8237301e7845293ba978e0/dist/index.js] user= workdir=
+2026-10-14T16:01:57.7997637Z   ❓ add-matcher /run/act/actions/6f/af5fd28547fdfdb5c5204705a1d00e6d07d0d7eb8237301e7845293ba978e0/dist/problem-matcher.json
+2026-10-14T16:01:57.7999115Z ::add-matcher::/run/act/actions/6f/af5fd28547fdfdb5c5204705a1d00e6d07d0d7eb8237301e7845293ba978e0/dist/problem-matcher.json
+2026-10-14T16:01:57.8017637Z Syncing repository: apps/hello
+2026-10-14T16:01:57.8032823Z ##[group]Getting Git version info
+2026-10-14T16:01:57.8035317Z Working directory is '/workspace/apps/hello'
+2026-10-14T16:01:57.8368739Z [command]/usr/bin/git version
+2026-10-14T16:01:57.8534496Z git version 2.39.5
+2026-10-14T16:01:57.8644924Z ##[endgroup]
+2026-10-14T16:01:57.8723107Z Temporarily overriding HOME='/tmp/94b7c16d-c3af-4de7-9c90-3486dd790345' before making global git config changes
+2026-10-14T16:01:57.8723868Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T16:01:57.8749804Z [command]/usr/bin/git config --global --add safe.directory /workspace/apps/hello
+2026-10-14T16:01:57.8944458Z Deleting the contents of '/workspace/apps/hello'
+2026-10-14T16:01:57.8962661Z ##[group]Determining repository object format
+2026-10-14T16:01:57.8972724Z ##[endgroup]
+2026-10-14T16:01:57.8973794Z ##[group]Initializing the repository
+2026-10-14T16:01:57.8992847Z [command]/usr/bin/git init /workspace/apps/hello
+2026-10-14T16:01:57.9316534Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-14T16:01:57.9319228Z hint: is subject to change. To configure the initial branch name to use in all
+2026-10-14T16:01:57.9319634Z hint: of your new repositories, which will suppress this warning, call:
+2026-10-14T16:01:57.9319928Z hint: 
+2026-10-14T16:01:57.9320194Z hint: 	git config --global init.defaultBranch <name>
+2026-10-14T16:01:57.9320594Z hint: 
+2026-10-14T16:01:57.9320873Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-14T16:01:57.9321166Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-14T16:01:57.9321435Z hint: 
+2026-10-14T16:01:57.9321691Z hint: 	git branch -m <name>
+2026-10-14T16:01:57.9339251Z Initialized empty Git repository in /workspace/apps/hello/.git/
+2026-10-14T16:01:57.9382278Z [command]/usr/bin/git remote add origin https://git.lab.test/apps/hello
+2026-10-14T16:01:57.9511760Z ##[endgroup]
+2026-10-14T16:01:57.9513294Z ##[group]Disabling automatic garbage collection
+2026-10-14T16:01:57.9532834Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-14T16:01:57.9651209Z ##[endgroup]
+2026-10-14T16:01:57.9652086Z ##[group]Setting up auth
+2026-10-14T16:01:57.9658119Z Removing SSH command configuration
+2026-10-14T16:01:57.9686059Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T16:01:57.9814710Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T16:01:58.1290044Z Removing HTTP extra header
+2026-10-14T16:01:58.1305800Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T16:01:58.1335561Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T16:01:58.1530383Z Removing includeIf entries pointing to credentials config files
+2026-10-14T16:01:58.1534761Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T16:01:58.1564591Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T16:01:58.1798434Z [command]/usr/bin/git config --file /tmp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config http.https://git.lab.test/.extraheader AUTHORIZATION: basic ***
+2026-10-14T16:01:58.1840500Z [command]/usr/bin/git config --local includeIf.gitdir:/workspace/apps/hello/.git.path /tmp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.1869013Z [command]/usr/bin/git config --local includeIf.gitdir:/workspace/apps/hello/.git/worktrees/*.path /tmp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.1894473Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.1919992Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.1943469Z ##[endgroup]
+2026-10-14T16:01:58.1943629Z ##[group]Fetching the repository
+2026-10-14T16:01:58.1952134Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9463bcd1b411aebf04f373485a5f2bbabf0299d2:refs/remotes/origin/main
+2026-10-14T16:01:58.3046989Z From https://git.lab.test/apps/hello
+2026-10-14T16:01:58.3047665Z  * [new ref]         9463bcd1b411aebf04f373485a5f2bbabf0299d2 -> origin/main
+2026-10-14T16:01:58.3083657Z [command]/usr/bin/git branch --list --remote origin/main
+2026-10-14T16:01:58.3113234Z   origin/main
+2026-10-14T16:01:58.3125335Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-10-14T16:01:58.3152035Z 9463bcd1b411aebf04f373485a5f2bbabf0299d2
+2026-10-14T16:01:58.3157504Z ##[endgroup]
+2026-10-14T16:01:58.3158043Z ##[group]Determining the checkout info
+2026-10-14T16:01:58.3161372Z ##[endgroup]
+2026-10-14T16:01:58.3183450Z [command]/usr/bin/git sparse-checkout disable
+2026-10-14T16:01:58.3235890Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-14T16:01:58.3278589Z ##[group]Checking out the ref
+2026-10-14T16:01:58.3285270Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-14T16:01:58.3390273Z Switched to a new branch 'main'
+2026-10-14T16:01:58.3390966Z branch 'main' set up to track 'origin/main'.
+2026-10-14T16:01:58.3400566Z ##[endgroup]
+2026-10-14T16:01:58.3480090Z [command]/usr/bin/git log -1 --format=%H
+2026-10-14T16:01:58.3544069Z 9463bcd1b411aebf04f373485a5f2bbabf0299d2
+2026-10-14T16:01:58.3571008Z ##[group]Removing auth
+2026-10-14T16:01:58.3571389Z Removing SSH command configuration
+2026-10-14T16:01:58.3586199Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T16:01:58.3703461Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T16:01:58.5069043Z Removing HTTP extra header
+2026-10-14T16:01:58.5086806Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T16:01:58.5234692Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T16:01:58.6440033Z Removing includeIf entries pointing to credentials config files
+2026-10-14T16:01:58.6451991Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T16:01:58.6546247Z includeif.gitdir:/workspace/apps/hello/.git.path
+2026-10-14T16:01:58.6547938Z includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path
+2026-10-14T16:01:58.6548421Z includeif.gitdir:/github/workspace/.git.path
+2026-10-14T16:01:58.6548720Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-14T16:01:58.6586858Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/workspace/apps/hello/.git.path
+2026-10-14T16:01:58.6675444Z /tmp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.6714081Z [command]/usr/bin/git config --local --unset includeif.gitdir:/workspace/apps/hello/.git.path /tmp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.6994027Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path
+2026-10-14T16:01:58.7079882Z /tmp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.7129253Z [command]/usr/bin/git config --local --unset includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path /tmp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.7353441Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-14T16:01:58.7440627Z /github/runner_temp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.7473650Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.7602251Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-14T16:01:58.7683405Z /github/runner_temp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.7716149Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config
+2026-10-14T16:01:58.7843753Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T16:01:58.9336872Z Removing credentials config '/tmp/git-credentials-42927636-7119-4959-bfc7-8e7a6e46006a.config'
+2026-10-14T16:01:58.9375949Z ##[endgroup]
+2026-10-14T16:01:58.9389325Z ::remove-matcher owner=checkout-git::
+2026-10-14T16:01:59.7086605Z Login Succeeded
+2026-10-14T16:01:59.7098203Z 
+2026-10-14T16:01:59.7099394Z WARNING! Your credentials are stored unencrypted in '/root/.docker/config.json'.
+2026-10-14T16:01:59.7099807Z Configure a credential helper to remove this warning. See
+2026-10-14T16:01:59.7100131Z https://docs.docker.com/go/credential-store/
+2026-10-14T16:01:59.7100488Z 
+2026-10-14T16:02:00.6761853Z release
+2026-10-14T16:02:01.0371303Z #0 building with "release" instance using docker-container driver
+2026-10-14T16:02:01.0372255Z 
+2026-10-14T16:02:01.0372696Z #1 [internal] booting buildkit
+2026-10-14T16:02:01.1890989Z #1 pulling image moby/buildkit:buildx-stable-1
+2026-10-14T16:02:46.1271872Z #1 pulling image moby/buildkit:buildx-stable-1 45.1s done
+2026-10-14T16:02:48.6089849Z #1 creating container buildx_buildkit_release0
+2026-10-14T16:02:50.0384517Z #1 creating container buildx_buildkit_release0 1.4s done
+2026-10-14T16:02:50.2500622Z #1 DONE 49.0s
+2026-10-14T16:02:50.2501870Z 
+2026-10-14T16:02:50.2502242Z #2 [internal] load build definition from Dockerfile
+2026-10-14T16:02:50.2502554Z #2 transferring dockerfile: 524B done
+2026-10-14T16:02:50.2502859Z #2 DONE 0.0s
+2026-10-14T16:02:50.2503148Z 
+2026-10-14T16:02:50.2503422Z #3 resolve image config for docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+2026-10-14T16:02:53.2992859Z #3 DONE 3.2s
+2026-10-14T16:02:53.4522362Z 
+2026-10-14T16:02:53.4523358Z #4 [internal] load metadata for docker.io/library/golang:1.27-bookworm
+2026-10-14T16:02:55.7118496Z #4 DONE 2.4s
+2026-10-14T16:02:55.7119510Z 
+2026-10-14T16:02:55.7119944Z #5 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot
+2026-10-14T16:02:58.1712343Z #5 DONE 4.9s
+2026-10-14T16:02:58.2760914Z 
+2026-10-14T16:02:58.2761246Z #6 [internal] load .dockerignore
+2026-10-14T16:02:58.2761347Z #6 transferring context: 69B done
+2026-10-14T16:02:58.2761505Z #6 DONE 0.0s
+2026-10-14T16:02:58.2761817Z 
+2026-10-14T16:02:58.2761910Z #7 [internal] load build context
+2026-10-14T16:02:58.2762086Z #7 transferring context: 7.65kB done
+2026-10-14T16:02:58.2762176Z #7 DONE 0.0s
+2026-10-14T16:02:58.2762219Z 
+2026-10-14T16:02:58.2762309Z #8 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+2026-10-14T16:02:58.2762427Z #8 resolve gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab done
+2026-10-14T16:02:58.2762529Z #8 DONE 0.1s
+2026-10-14T16:02:58.2762593Z 
+2026-10-14T16:02:58.2762635Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:02:58.2762799Z #9 resolve docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61 0.0s done
+2026-10-14T16:02:58.4141374Z #9 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 0B / 32B 0.2s
+2026-10-14T16:02:58.5628908Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 0B / 71.15MB 0.2s
+2026-10-14T16:02:58.5629437Z #9 sha256:018c58ecdb70412cf84e606f54c9a6eb423539dec826df5793442c42cff872a4 0B / 127B 0.2s
+2026-10-14T16:02:58.5629551Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 0B / 92.58MB 0.2s
+2026-10-14T16:02:58.8653810Z #9 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B 0.5s done
+2026-10-14T16:02:59.0156274Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 0B / 66.72MB 0.2s
+2026-10-14T16:02:59.1650829Z #9 sha256:018c58ecdb70412cf84e606f54c9a6eb423539dec826df5793442c42cff872a4 127B / 127B 0.8s done
+2026-10-14T16:02:59.3136180Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 0B / 23.87MB 0.2s
+2026-10-14T16:02:59.8997982Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 5.24MB / 92.58MB 1.5s
+2026-10-14T16:03:01.4114698Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 4.19MB / 71.15MB 3.0s
+2026-10-14T16:03:02.0135153Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 2.10MB / 23.87MB 2.9s
+2026-10-14T16:03:03.9456676Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 8.39MB / 71.15MB 5.6s
+2026-10-14T16:03:04.0957197Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 3.15MB / 66.72MB 5.3s
+2026-10-14T16:03:04.2459360Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 4.19MB / 23.87MB 5.1s
+2026-10-14T16:03:04.9953044Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 9.44MB / 92.58MB 6.6s
+2026-10-14T16:03:06.2140979Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 12.58MB / 71.15MB 8.0s
+2026-10-14T16:03:06.9639892Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 6.29MB / 23.87MB 7.8s
+2026-10-14T16:03:08.1707487Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 16.78MB / 71.15MB 9.9s
+2026-10-14T16:03:08.3154052Z #9 ...
+2026-10-14T16:03:08.3155272Z 
+2026-10-14T16:03:08.3155632Z #8 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+2026-10-14T16:03:08.3158100Z #8 sha256:96ed2737ae312e0bc637b40783f7c2f23416cb72ca957aa01855f1614278e64b 143.35kB / 143.35kB 3.9s done
+2026-10-14T16:03:08.3158575Z #8 sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112 80B / 80B 1.5s done
+2026-10-14T16:03:08.3158981Z #8 sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a 351B / 351B 1.4s done
+2026-10-14T16:03:08.3159318Z #8 sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296 162B / 162B 1.5s done
+2026-10-14T16:03:08.3160644Z #8 sha256:dcaa5a89b0ccda4b283e16d0b4d0891cd93d5fe05c6798f7806781a6a2d84354 314B / 314B 1.1s done
+2026-10-14T16:03:08.3161045Z #8 sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4 123B / 123B 1.1s done
+2026-10-14T16:03:08.3161334Z #8 sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212 188B / 188B 2.0s done
+2026-10-14T16:03:08.3161643Z #8 sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a 67B / 67B 0.8s done
+2026-10-14T16:03:08.3164570Z #8 sha256:bf7a4185f01524837d19abde915ffde84e64368b250f5b5e9f6f75aea62a11d4 29.00kB / 29.00kB 1.8s done
+2026-10-14T16:03:08.3164941Z #8 sha256:990a9c434e5e0f11549a8d4a41a1991e621b04e30cd63269adbc97b1dc38fd7e 12.48kB / 12.48kB 1.5s done
+2026-10-14T16:03:08.3165229Z #8 sha256:39dc083afc39bd8dc43d456fe7ff7d39292e593bb2769972c11bb2e5f9119386 0B / 445.71kB 6.3s
+2026-10-14T16:03:08.3165506Z #8 sha256:a5789fc40e828c4e7467626e3f69ec5dea8e5da22fe660db8ae6d16f777b0bbf 83.90kB / 83.90kB 3.6s done
+2026-10-14T16:03:08.3165820Z #8 extracting sha256:a5789fc40e828c4e7467626e3f69ec5dea8e5da22fe660db8ae6d16f777b0bbf 0.0s done
+2026-10-14T16:03:08.3166139Z #8 extracting sha256:990a9c434e5e0f11549a8d4a41a1991e621b04e30cd63269adbc97b1dc38fd7e done
+2026-10-14T16:03:08.4639628Z #8 ...
+2026-10-14T16:03:08.4639902Z 
+2026-10-14T16:03:08.4639974Z #10 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+2026-10-14T16:03:08.4640059Z #10 resolve docker.io/docker/buildkit-syft-scanner:stable-1 0.3s done
+2026-10-14T16:03:08.6139652Z #10 ...
+2026-10-14T16:03:08.6139926Z 
+2026-10-14T16:03:08.6139983Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:03:09.2136508Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 5.24MB / 66.72MB 10.4s
+2026-10-14T16:03:09.8139496Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 8.39MB / 23.87MB 10.7s
+2026-10-14T16:03:10.1136150Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 11.53MB / 92.58MB 11.7s
+2026-10-14T16:03:10.2658271Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 20.97MB / 71.15MB 12.0s
+2026-10-14T16:03:12.5139332Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 25.17MB / 71.15MB 14.3s
+2026-10-14T16:03:14.3161100Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 8.39MB / 66.72MB 15.5s
+2026-10-14T16:03:14.3162590Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 10.49MB / 23.87MB 15.2s
+2026-10-14T16:03:14.7657446Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 29.36MB / 71.15MB 16.5s
+2026-10-14T16:03:15.2259011Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 13.63MB / 92.58MB 17.0s
+2026-10-14T16:03:15.3429528Z #9 ...
+2026-10-14T16:03:15.3431626Z 
+2026-10-14T16:03:15.3432070Z #8 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+2026-10-14T16:03:15.3432484Z #8 sha256:39dc083afc39bd8dc43d456fe7ff7d39292e593bb2769972c11bb2e5f9119386 445.71kB / 445.71kB 12.5s done
+2026-10-14T16:03:15.3432801Z #8 extracting sha256:39dc083afc39bd8dc43d456fe7ff7d39292e593bb2769972c11bb2e5f9119386 1.0s done
+2026-10-14T16:03:15.3433104Z #8 DONE 17.1s
+2026-10-14T16:03:15.3433381Z 
+2026-10-14T16:03:15.3433634Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:03:15.4613560Z #9 ...
+2026-10-14T16:03:15.4614764Z 
+2026-10-14T16:03:15.4615547Z #8 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+2026-10-14T16:03:15.4616193Z #8 extracting sha256:bf7a4185f01524837d19abde915ffde84e64368b250f5b5e9f6f75aea62a11d4 0.0s done
+2026-10-14T16:03:15.4616747Z #8 extracting sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a 0.0s done
+2026-10-14T16:03:15.4618158Z #8 extracting sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212 0.0s done
+2026-10-14T16:03:15.4618707Z #8 extracting sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4 0.0s done
+2026-10-14T16:03:15.4619458Z #8 extracting sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296 0.0s done
+2026-10-14T16:03:15.4619982Z #8 DONE 17.2s
+2026-10-14T16:03:15.4620380Z 
+2026-10-14T16:03:15.4620670Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:03:15.7089280Z #9 ...
+2026-10-14T16:03:15.7091303Z 
+2026-10-14T16:03:15.7091738Z #8 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+2026-10-14T16:03:15.7092116Z #8 extracting sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112 0.0s done
+2026-10-14T16:03:15.7092415Z #8 extracting sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a 0.0s done
+2026-10-14T16:03:15.7092730Z #8 extracting sha256:dcaa5a89b0ccda4b283e16d0b4d0891cd93d5fe05c6798f7806781a6a2d84354 0.0s done
+2026-10-14T16:03:15.7093026Z #8 extracting sha256:96ed2737ae312e0bc637b40783f7c2f23416cb72ca957aa01855f1614278e64b 0.0s done
+2026-10-14T16:03:15.7093888Z #8 DONE 17.3s
+2026-10-14T16:03:15.7094190Z 
+2026-10-14T16:03:15.7094437Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:03:17.1657441Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 33.55MB / 71.15MB 18.9s
+2026-10-14T16:03:18.9636444Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 37.75MB / 71.15MB 20.7s
+2026-10-14T16:03:18.9636751Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 12.58MB / 23.87MB 19.8s
+2026-10-14T16:03:19.4153345Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 11.53MB / 66.72MB 20.6s
+2026-10-14T16:03:20.4654337Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 14.68MB / 92.58MB 22.1s
+2026-10-14T16:03:20.9156574Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 41.94MB / 71.15MB 22.7s
+2026-10-14T16:03:22.8660430Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 46.14MB / 71.15MB 24.6s
+2026-10-14T16:03:24.0660310Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 14.68MB / 23.87MB 24.9s
+2026-10-14T16:03:24.5165314Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 13.63MB / 66.72MB 25.7s
+2026-10-14T16:03:25.1156449Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 50.33MB / 71.15MB 26.9s
+2026-10-14T16:03:25.5665267Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 15.73MB / 92.58MB 27.2s
+2026-10-14T16:03:26.9142640Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 54.53MB / 71.15MB 28.7s
+2026-10-14T16:03:28.4148142Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 58.72MB / 71.15MB 30.2s
+2026-10-14T16:03:29.1643659Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 15.73MB / 23.87MB 30.0s
+2026-10-14T16:03:29.6173229Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 14.68MB / 66.72MB 30.8s
+2026-10-14T16:03:30.0655472Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 62.91MB / 71.15MB 31.8s
+2026-10-14T16:03:30.6645161Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 16.78MB / 92.58MB 32.3s
+2026-10-14T16:03:32.0156491Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 67.11MB / 71.15MB 33.8s
+2026-10-14T16:03:32.1638474Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 17.83MB / 23.87MB 33.0s
+2026-10-14T16:03:33.6143235Z #9 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 71.15MB / 71.15MB 35.3s done
+2026-10-14T16:03:33.8588208Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 0B / 48.52MB 0.2s
+2026-10-14T16:03:34.6671618Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 16.78MB / 66.72MB 35.9s
+2026-10-14T16:03:35.0191173Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 3.15MB / 48.52MB 1.4s
+2026-10-14T16:03:35.6166303Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 17.83MB / 92.58MB 37.4s
+2026-10-14T16:03:35.7666209Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 19.92MB / 23.87MB 36.6s
+2026-10-14T16:03:36.3679112Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 6.29MB / 48.52MB 2.7s
+2026-10-14T16:03:37.5670101Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 9.44MB / 48.52MB 3.9s
+2026-10-14T16:03:38.6165771Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 22.02MB / 23.87MB 39.5s
+2026-10-14T16:03:38.9167560Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 12.58MB / 48.52MB 5.3s
+2026-10-14T16:03:39.8181916Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 18.87MB / 66.72MB 41.0s
+2026-10-14T16:03:40.4181763Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 15.73MB / 48.52MB 6.8s
+2026-10-14T16:03:40.7186489Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 19.92MB / 92.58MB 42.5s
+2026-10-14T16:03:41.6189470Z #9 sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 23.87MB / 23.87MB 42.5s done
+2026-10-14T16:03:42.2182316Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 18.87MB / 48.52MB 8.6s
+2026-10-14T16:03:44.1664364Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 22.02MB / 48.52MB 10.5s
+2026-10-14T16:03:44.9166297Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 19.92MB / 66.72MB 46.1s
+2026-10-14T16:03:45.3661905Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 25.17MB / 48.52MB 11.7s
+2026-10-14T16:03:45.8169966Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 22.02MB / 92.58MB 47.6s
+2026-10-14T16:03:46.4169772Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 28.31MB / 48.52MB 12.8s
+2026-10-14T16:03:47.4668747Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 31.46MB / 48.52MB 13.8s
+2026-10-14T16:03:48.6667071Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 34.60MB / 48.52MB 15.0s
+2026-10-14T16:03:49.5661792Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 37.75MB / 48.52MB 15.9s
+2026-10-14T16:03:50.0173184Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 20.97MB / 66.72MB 51.2s
+2026-10-14T16:03:50.6169637Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 40.89MB / 48.52MB 17.0s
+2026-10-14T16:03:50.9170809Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 24.12MB / 92.58MB 52.7s
+2026-10-14T16:03:51.6665650Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 44.04MB / 48.52MB 18.0s
+2026-10-14T16:03:51.8168404Z #9 ...
+2026-10-14T16:03:51.8168836Z 
+2026-10-14T16:03:51.8168920Z #10 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+2026-10-14T16:03:51.8168979Z #10 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 4.19MB / 49.55MB 10.2s
+2026-10-14T16:03:51.9662685Z #10 ...
+2026-10-14T16:03:51.9662979Z 
+2026-10-14T16:03:51.9663052Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:03:53.0161982Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 47.19MB / 48.52MB 19.4s
+2026-10-14T16:03:53.2887341Z #9 sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 48.52MB / 48.52MB 19.7s done
+2026-10-14T16:03:53.4239131Z #9 extracting sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6
+2026-10-14T16:03:54.9276256Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 22.02MB / 66.72MB 56.2s
+2026-10-14T16:03:55.8661870Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 29.36MB / 92.58MB 57.6s
+2026-10-14T16:03:56.7667286Z #9 extracting sha256:8cb71386cfcfc55b27b559f73c6d5c0cdcb93b83be8281314116e271cc42cea6 3.4s done
+2026-10-14T16:03:56.7667605Z #9 extracting sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d
+2026-10-14T16:03:57.3665527Z #9 extracting sha256:a4edf9c328e814bd91b20c8e2211065489ebf15a16c7663d68a880660dfc897d 0.5s done
+2026-10-14T16:03:57.8198429Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 34.60MB / 92.58MB 59.6s
+2026-10-14T16:03:58.2667841Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 26.21MB / 66.72MB 59.4s
+2026-10-14T16:04:01.5671945Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 39.85MB / 92.58MB 63.3s
+2026-10-14T16:04:02.0169137Z #9 ...
+2026-10-14T16:04:02.0169441Z 
+2026-10-14T16:04:02.0169527Z #10 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+2026-10-14T16:04:02.0169616Z #10 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 14.68MB / 49.55MB 20.4s
+2026-10-14T16:04:02.1667427Z #10 ...
+2026-10-14T16:04:02.1667716Z 
+2026-10-14T16:04:02.1667823Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:04:02.4670521Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 30.41MB / 66.72MB 63.6s
+2026-10-14T16:04:05.7662832Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 45.09MB / 92.58MB 67.5s
+2026-10-14T16:04:07.5671497Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 33.55MB / 66.72MB 68.7s
+2026-10-14T16:04:10.8668080Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 49.28MB / 92.58MB 72.6s
+2026-10-14T16:04:12.2186076Z #9 ...
+2026-10-14T16:04:12.2187028Z 
+2026-10-14T16:04:12.2187986Z #10 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+2026-10-14T16:04:12.2188346Z #10 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 36.70MB / 49.55MB 30.6s
+2026-10-14T16:04:12.3690695Z #10 ...
+2026-10-14T16:04:12.3691981Z 
+2026-10-14T16:04:12.3692928Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:04:12.6668331Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 35.65MB / 66.72MB 73.8s
+2026-10-14T16:04:15.9672258Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 53.48MB / 92.58MB 77.7s
+2026-10-14T16:04:17.7668411Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 39.85MB / 66.72MB 78.9s
+2026-10-14T16:04:19.9266371Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 44.04MB / 66.72MB 81.2s
+2026-10-14T16:04:20.3163605Z #9 ...
+2026-10-14T16:04:20.3163997Z 
+2026-10-14T16:04:20.3164104Z #10 docker-image://docker.io/docker/buildkit-syft-scanner:stable-1
+2026-10-14T16:04:20.3164202Z #10 sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 49.55MB / 49.55MB 36.8s done
+2026-10-14T16:04:20.3164334Z #10 extracting sha256:307ce207d6cb61564520be6064a834450b1cc937f720bee712ee09ed9ded309f 1.8s done
+2026-10-14T16:04:20.3164431Z #10 DONE 81.9s
+2026-10-14T16:04:20.3164501Z 
+2026-10-14T16:04:20.3164582Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:04:21.0664996Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 57.67MB / 92.58MB 82.8s
+2026-10-14T16:04:21.2175487Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 48.23MB / 66.72MB 82.4s
+2026-10-14T16:04:22.8665083Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 52.43MB / 66.72MB 84.0s
+2026-10-14T16:04:23.9165005Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 62.91MB / 92.58MB 85.7s
+2026-10-14T16:04:26.0182054Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 68.16MB / 92.58MB 87.8s
+2026-10-14T16:04:26.4665658Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 56.62MB / 66.72MB 87.6s
+2026-10-14T16:04:27.6688041Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 73.40MB / 92.58MB 89.4s
+2026-10-14T16:04:29.3167766Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 78.64MB / 92.58MB 91.1s
+2026-10-14T16:04:31.2669287Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 60.82MB / 66.72MB 92.4s
+2026-10-14T16:04:31.5661546Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 83.89MB / 92.58MB 93.3s
+2026-10-14T16:04:33.0670441Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 65.01MB / 66.72MB 94.2s
+2026-10-14T16:04:33.7886953Z #9 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 66.72MB / 66.72MB 95.0s done
+2026-10-14T16:04:33.9668067Z #9 extracting sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff
+2026-10-14T16:04:34.3238367Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 90.18MB / 92.58MB 96.1s
+2026-10-14T16:04:35.1298188Z #9 sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 92.58MB / 92.58MB 96.8s done
+2026-10-14T16:04:43.0815158Z #9 extracting sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 9.3s done
+2026-10-14T16:04:43.0823183Z #9 DONE 104.9s
+2026-10-14T16:04:43.2323274Z 
+2026-10-14T16:04:43.2323832Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:04:43.2324036Z #9 extracting sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c
+2026-10-14T16:04:55.2832971Z #9 extracting sha256:e27d95d86248184505d1806dbe46f052fede7d3924bce88bd3bf570b77ae367c 12.2s done
+2026-10-14T16:04:55.2833497Z #9 DONE 117.1s
+2026-10-14T16:04:55.4349744Z 
+2026-10-14T16:04:55.4356731Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:04:55.4357885Z #9 extracting sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2
+2026-10-14T16:05:12.6514940Z #9 extracting sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 17.4s done
+2026-10-14T16:05:12.6516038Z #9 DONE 134.4s
+2026-10-14T16:05:12.8406557Z 
+2026-10-14T16:05:12.8408640Z #9 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:05:12.8409225Z #9 extracting sha256:018c58ecdb70412cf84e606f54c9a6eb423539dec826df5793442c42cff872a4 0.0s done
+2026-10-14T16:05:12.8409631Z #9 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 0.0s done
+2026-10-14T16:05:12.8409957Z #9 DONE 134.5s
+2026-10-14T16:05:12.8410224Z 
+2026-10-14T16:05:12.8410473Z #11 [build 2/7] WORKDIR /src
+2026-10-14T16:05:13.3362412Z #11 DONE 0.6s
+2026-10-14T16:05:13.5038123Z 
+2026-10-14T16:05:13.5039414Z #12 [build 3/7] COPY go.mod go.sum ./
+2026-10-14T16:05:13.5040029Z #12 DONE 0.0s
+2026-10-14T16:05:13.5040519Z 
+2026-10-14T16:05:13.5040989Z #13 [build 4/7] RUN go mod download
+2026-10-14T16:05:27.3245947Z #13 DONE 14.0s
+2026-10-14T16:05:27.5244947Z 
+2026-10-14T16:05:27.5245930Z #14 [build 5/7] COPY cmd ./cmd
+2026-10-14T16:05:27.5246382Z #14 DONE 0.0s
+2026-10-14T16:05:27.5246670Z 
+2026-10-14T16:05:27.5246956Z #15 [build 6/7] COPY internal ./internal
+2026-10-14T16:05:27.5247678Z #15 DONE 0.0s
+2026-10-14T16:05:27.5247923Z 
+2026-10-14T16:05:27.5248280Z #16 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -X main.version=9463bcd1b411aebf04f373485a5f2bbabf0299d2" -o /hello ./cmd/hello
+2026-10-14T16:08:25.3615772Z #16 DONE 178.0s
+2026-10-14T16:08:27.3494558Z 
+2026-10-14T16:08:27.3499083Z #17 [stage-1 2/2] COPY --from=build /hello /hello
+2026-10-14T16:08:27.5592260Z #17 DONE 0.1s
+2026-10-14T16:08:27.7850882Z 
+2026-10-14T16:08:27.7851278Z #18 [linux/amd64] generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1
+2026-10-14T16:08:28.0240127Z #18 0.071 time="2026-10-14T16:08:27Z" level=info msg="starting syft scanner for buildkit v1.12.0"
+2026-10-14T16:08:31.5285619Z #18 DONE 3.7s
+2026-10-14T16:08:31.6878907Z 
+2026-10-14T16:08:31.6879388Z #19 exporting to image
+2026-10-14T16:08:31.6879549Z #19 exporting layers
+2026-10-14T16:08:32.0806758Z #19 exporting layers 0.5s done
+2026-10-14T16:08:32.2368892Z #19 exporting manifest sha256:c9d4c68c82a18a69fccdce661a27e3aabf801b369565f7c36a3391b2e60d9ccf done
+2026-10-14T16:08:32.2371256Z #19 exporting config sha256:01091b5f02e1a61e23c27a4f1cf2dbc3f4a5710b15e3079765025178634e06b1 done
+2026-10-14T16:08:32.8917498Z #19 exporting attestation manifest sha256:b1e60abe60d311291ebfb338098cc1fe716712a6b8426f6f31cfd009f4f3eaea
+2026-10-14T16:08:33.0592498Z #19 ...
+2026-10-14T16:08:33.0592831Z 
+2026-10-14T16:08:33.0592888Z #20 [auth] *:: apps/hello:pull,push token for git.lab.test
+2026-10-14T16:08:33.0592989Z #20 DONE 0.0s
+2026-10-14T16:08:33.0593030Z 
+2026-10-14T16:08:33.0593073Z #19 exporting to image
+2026-10-14T16:08:33.0593142Z #19 exporting attestation manifest sha256:b1e60abe60d311291ebfb338098cc1fe716712a6b8426f6f31cfd009f4f3eaea 0.0s done
+2026-10-14T16:08:33.0593202Z #19 exporting manifest list sha256:ff5fe077cb9d4833e6abdfba397ba1cee1535ac18044f59cfd4a2b9fe40597e0 done
+2026-10-14T16:08:33.0593263Z #19 pushing layers
+2026-10-14T16:08:33.1251974Z #19 pushing layers 0.2s done
+2026-10-14T16:08:33.1252521Z #19 pushing manifest for git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2@sha256:ff5fe077cb9d4833e6abdfba397ba1cee1535ac18044f59cfd4a2b9fe40597e0
+2026-10-14T16:08:33.2317538Z #19 pushing manifest for git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2@sha256:ff5fe077cb9d4833e6abdfba397ba1cee1535ac18044f59cfd4a2b9fe40597e0 0.1s done
+2026-10-14T16:08:33.2317876Z #19 DONE 1.7s
+2026-10-14T16:08:33.2317935Z 
+2026-10-14T16:08:33.2317990Z #21 resolving provenance for metadata file
+2026-10-14T16:08:33.2318037Z #21 DONE 0.0s
+2026-10-14T16:08:33.2605626Z pushed git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2@sha256:ff5fe077cb9d4833e6abdfba397ba1cee1535ac18044f59cfd4a2b9fe40597e0
+2026-10-14T16:08:33.5095239Z Agent pid 337
+2026-10-14T16:08:33.5297525Z Identity added: (stdin) (kamal-deploy-lane)
+2026-10-14T16:08:34.1481823Z Pull app image...
+2026-10-14T16:08:35.1026293Z   INFO [916c2eeb] Running docker login git.lab.test -u [REDACTED] -p [REDACTED] on 10.77.0.30
+2026-10-14T16:08:35.1027952Z   INFO [916c2eeb] Finished in 0.927 seconds with exit status 0 (successful).
+2026-10-14T16:08:36.5293467Z   INFO [9a8ec8ea] Running docker image rm --force git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2 on 10.77.0.30
+2026-10-14T16:08:36.5294479Z   INFO [9a8ec8ea] Finished in 0.094 seconds with exit status 0 (successful).
+2026-10-14T16:08:36.5294857Z   INFO [65fcc724] Running docker pull git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2 on 10.77.0.30
+2026-10-14T16:08:36.5295563Z   INFO [65fcc724] Finished in 0.944 seconds with exit status 0 (successful).
+2026-10-14T16:08:36.5296075Z   INFO [84cef06e] Running docker inspect -f '{{ .Config.Labels.service }}' git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2 | grep -x hello || (echo "Image git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2 is missing the 'service' label" && exit 1) on 10.77.0.30
+2026-10-14T16:08:36.5296633Z   INFO [84cef06e] Finished in 0.255 seconds with exit status 0 (successful).
+2026-10-14T16:08:36.5296935Z   INFO [4c60e2b5] Running /usr/bin/env mkdir -p .kamal on 10.77.0.30
+2026-10-14T16:08:36.5297834Z   INFO [4c60e2b5] Finished in 0.064 seconds with exit status 0 (successful).
+2026-10-14T16:08:36.5298196Z Acquiring the deploy lock...
+2026-10-14T16:08:36.5972839Z Ensure kamal-proxy is running...
+2026-10-14T16:08:51.2654923Z   INFO [83a18569] Running docker network create kamal on 10.77.0.30
+2026-10-14T16:08:51.2655204Z   INFO [83a18569] Finished in 0.306 seconds with exit status 0 (successful).
+2026-10-14T16:08:51.2655279Z   INFO [1335569f] Running docker login git.lab.test -u [REDACTED] -p [REDACTED] on 10.77.0.30
+2026-10-14T16:08:51.2655334Z   INFO [1335569f] Finished in 0.192 seconds with exit status 0 (successful).
+2026-10-14T16:08:51.2655386Z   INFO [d4db0cd0] Running docker inspect kamal-proxy --format '{{.Config.Image}}' | awk -F: '{print $NF}' on 10.77.0.30
+2026-10-14T16:08:51.2655448Z   INFO [d4db0cd0] Finished in 0.132 seconds with exit status 0 (successful).
+2026-10-14T16:08:51.2655540Z   INFO [08c6d6a2] Running /usr/bin/env mkdir -p .kamal/proxy/apps-config on 10.77.0.30
+2026-10-14T16:08:51.2655591Z   INFO [08c6d6a2] Finished in 0.050 seconds with exit status 0 (successful).
+2026-10-14T16:08:51.2655667Z   INFO [48ee43ca] Running docker container start kamal-proxy || echo $(cat .kamal/proxy/options 2> /dev/null || echo "--publish 80:80 --publish 443:443 --log-opt max-size=10m") $(cat .kamal/proxy/image 2> /dev/null || echo "basecamp/kamal-proxy"):$(cat .kamal/proxy/image_version 2> /dev/null || echo "v0.9.2") $(cat .kamal/proxy/run_command 2> /dev/null || echo "") | xargs docker run --name kamal-proxy --network kamal --detach --restart unless-stopped --volume kamal-proxy-config:/home/kamal-proxy/.config/kamal-proxy --volume $PWD/.kamal/proxy/apps-config:/home/kamal-proxy/.apps-config on 10.77.0.30
+2026-10-14T16:08:51.2655776Z   INFO [48ee43ca] Finished in 13.976 seconds with exit status 0 (successful).
+2026-10-14T16:08:51.2655835Z Detect stale containers...
+2026-10-14T16:08:51.4984411Z   INFO [77dc3807] Running docker ps --filter label=service=hello --filter label=destination= --filter label=role=web --format "{{.Names}}" | while read line; do echo ${line#hello-web-}; done on 10.77.0.30
+2026-10-14T16:08:51.4985715Z   INFO [77dc3807] Finished in 0.052 seconds with exit status 0 (successful).
+2026-10-14T16:08:51.4986600Z   INFO [7a55b535] Running /usr/bin/env sh -c 'docker ps --latest --format '\''{{.Names}}'\'' --filter label=service=hello --filter label=destination= --filter label=role=web --filter status=running --filter status=restarting --filter ancestor=$(docker image ls --filter reference=git.lab.test/apps/hello:latest --format '\''{{.ID}}'\'') ; docker ps --latest --format '\''{{.Names}}'\'' --filter label=service=hello --filter label=destination= --filter label=role=web --filter status=running --filter status=restarting' | head -1 | while read line; do echo ${line#hello-web-}; done on 10.77.0.30
+2026-10-14T16:08:51.4987896Z   INFO [7a55b535] Finished in 0.174 seconds with exit status 0 (successful).
+2026-10-14T16:08:51.4988269Z Start container with version 9463bcd1b411aebf04f373485a5f2bbabf0299d2 (or reboot if already running)...
+2026-10-14T16:08:51.8383260Z   INFO [1a3a0055] Running docker container ls --all --filter 'name=^hello-web-9463bcd1b411aebf04f373485a5f2bbabf0299d2$' --quiet on 10.77.0.30
+2026-10-14T16:08:51.8384402Z   INFO [1a3a0055] Finished in 0.100 seconds with exit status 0 (successful).
+2026-10-14T16:08:51.8384791Z   INFO [ed30966b] Running /usr/bin/env sh -c 'docker ps --latest --format '\''{{.Names}}'\'' --filter label=service=hello --filter label=destination= --filter label=role=web --filter status=running --filter status=restarting --filter ancestor=$(docker image ls --filter reference=git.lab.test/apps/hello:latest --format '\''{{.ID}}'\'') ; docker ps --latest --format '\''{{.Names}}'\'' --filter label=service=hello --filter label=destination= --filter label=role=web --filter status=running --filter status=restarting' | head -1 | while read line; do echo ${line#hello-web-}; done on 10.77.0.30
+2026-10-14T16:08:51.8385483Z   INFO [ed30966b] Finished in 0.235 seconds with exit status 0 (successful).
+2026-10-14T16:08:52.7552527Z   INFO [4b6b8e81] Running /usr/bin/env mkdir -p .kamal/apps/hello/env/roles on 10.77.0.30
+2026-10-14T16:08:52.7553117Z   INFO [4b6b8e81] Finished in 0.070 seconds with exit status 0 (successful).
+2026-10-14T16:08:52.7553320Z   INFO Uploading .kamal/apps/hello/env/roles/web.env 100.0%
+2026-10-14T16:08:52.7553676Z   INFO [629c759f] Running docker run --detach --restart unless-stopped --name hello-web-9463bcd1b411aebf04f373485a5f2bbabf0299d2 --network kamal --hostname 10.77.0.30-1ab0304804f8 --env KAMAL_CONTAINER_NAME="hello-web-9463bcd1b411aebf04f373485a5f2bbabf0299d2" --env KAMAL_VERSION="9463bcd1b411aebf04f373485a5f2bbabf0299d2" --env KAMAL_HOST="10.77.0.30" --env-file .kamal/apps/hello/env/roles/web.env --log-opt max-size="10m" --label service="hello" --label role="web" --label destination git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2 on 10.77.0.30
+2026-10-14T16:08:52.7554154Z   INFO [629c759f] Finished in 0.267 seconds with exit status 0 (successful).
+2026-10-14T16:08:52.7554423Z   INFO [fc64a6d8] Running docker container ls --all --filter 'name=^hello-web-9463bcd1b411aebf04f373485a5f2bbabf0299d2$' --quiet on 10.77.0.30
+2026-10-14T16:08:52.7554625Z   INFO [fc64a6d8] Finished in 0.074 seconds with exit status 0 (successful).
+2026-10-14T16:08:52.7554803Z   INFO [29767ee3] Running docker exec kamal-proxy kamal-proxy deploy hello-web --target="cb5624fafbeb:3000" --host="app.lab.test" --deploy-timeout="20s" --drain-timeout="30s" --health-check-interval="1s" --health-check-timeout="3s" --health-check-path="/up" --buffer-requests --buffer-responses --log-request-header="Cache-Control" --log-request-header="Last-Modified" --log-request-header="User-Agent" on 10.77.0.30
+2026-10-14T16:08:52.7555058Z   INFO [29767ee3] Finished in 0.313 seconds with exit status 0 (successful).
+2026-10-14T16:08:52.7555208Z   INFO First web container is healthy on 10.77.0.30, booting any other roles
+2026-10-14T16:08:52.9920075Z   INFO [d66c247a] Running docker tag git.lab.test/apps/hello:9463bcd1b411aebf04f373485a5f2bbabf0299d2 git.lab.test/apps/hello:latest on 10.77.0.30
+2026-10-14T16:08:52.9921104Z   INFO [d66c247a] Finished in 0.180 seconds with exit status 0 (successful).
+2026-10-14T16:08:52.9921528Z Prune old containers and images...
+2026-10-14T16:08:53.3209626Z   INFO [2ffd2fdc] Running docker ps -q -a --filter label=service=hello --filter status=created --filter status=exited --filter status=dead | tail -n +6 | while read container_id; do docker rm $container_id; done on 10.77.0.30
+2026-10-14T16:08:53.3210293Z   INFO [2ffd2fdc] Finished in 0.032 seconds with exit status 0 (successful).
+2026-10-14T16:08:53.8642818Z   INFO [f65cd1a8] Running docker image prune --force --filter label=service=hello on 10.77.0.30
+2026-10-14T16:08:53.8643172Z   INFO [f65cd1a8] Finished in 0.109 seconds with exit status 0 (successful).
+2026-10-14T16:08:53.8643286Z   INFO [96873046] Running docker image ls --filter label=service=hello --format '{{.ID}} {{.Repository}}:{{.Tag}}' | grep -v -w "$(docker container ls -a --format '{{.Image}}\|' --filter label=service=hello | tr -d '\n')git.lab.test/apps/hello:latest\|git.lab.test/apps/hello:<none>" | while read image tag; do docker rmi $tag; done on 10.77.0.30
+2026-10-14T16:08:53.8643410Z   INFO [96873046] Finished in 0.336 seconds with exit status 0 (successful).
+2026-10-14T16:08:53.8643520Z Releasing the deploy lock...
+2026-10-14T16:08:53.9223912Z   Finished all in 19.8 seconds
+2026-10-14T16:08:55.8610179Z release removed
+2026-10-14T16:08:55.8734176Z Removing login credentials for git.lab.test
+2026-10-14T16:08:55.8855881Z ⭐ Run Post actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T16:08:55.8873785Z   🐳  docker exec cmd=[node /var/run/act/actions/6f/af5fd28547fdfdb5c5204705a1d00e6d07d0d7eb8237301e7845293ba978e0/dist/index.js] user= workdir=
+2026-10-14T16:08:56.0534957Z [command]/usr/bin/git version
+2026-10-14T16:08:56.0573386Z git version 2.39.5
+2026-10-14T16:08:56.0598509Z   ⚙  ***
+2026-10-14T16:08:56.0617222Z Temporarily overriding HOME='/tmp/d6111d91-2ef1-4900-8f83-d42e7d6fa0a0' before making global git config changes
+2026-10-14T16:08:56.0617394Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T16:08:56.0621612Z [command]/usr/bin/git config --global --add safe.directory /workspace/apps/hello
+2026-10-14T16:08:56.0651318Z Removing SSH command configuration
+2026-10-14T16:08:56.0658041Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T16:08:56.0690706Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T16:08:56.1681495Z Removing HTTP extra header
+2026-10-14T16:08:56.1704995Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T16:08:56.1858794Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T16:08:56.3134521Z Removing includeIf entries pointing to credentials config files
+2026-10-14T16:08:56.3249934Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T16:08:56.3379035Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T16:08:56.4963589Z   ✅  Success - Post actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T16:08:56.5746097Z 🏁  Job succeeded

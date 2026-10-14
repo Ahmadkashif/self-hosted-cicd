@@ -1,0 +1,167 @@
+2026-10-14T15:51:46.3342449Z Runner 00000000-0000-0000-0000-00000000c1c1 (version:v13.2.0) received task 1 of job ci, triggered by event: push
+2026-10-14T15:51:46.3392876Z workflow prepared
+2026-10-14T15:51:46.3573525Z 🚀  Start image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb
+2026-10-14T15:51:46.3764296Z   🐳  docker pull image=postgres:17 platform=linux/amd64 username= forcePull=true
+2026-10-14T15:52:43.2987046Z using DockerAuthConfig authentication for docker pull
+2026-10-14T15:52:43.2987528Z   🐳  docker pull image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 username= forcePull=true
+2026-10-14T15:53:00.6801208Z Cleaning up services for job ci
+2026-10-14T15:53:00.6804230Z Cleaning up network for job ci, and network name is: WORKFLOW-37b430ba0d47759eb252de9b522ffe9b
+2026-10-14T15:53:00.7184043Z   🐳  docker create image=postgres:17 platform=linux/amd64 entrypoint=[] cmd=[] network="WORKFLOW-37b430ba0d47759eb252de9b522ffe9b"
+2026-10-14T15:53:00.9767578Z   🐳  docker run image=postgres:17 platform=linux/amd64 entrypoint=[] cmd=[] network="WORKFLOW-37b430ba0d47759eb252de9b522ffe9b"
+2026-10-14T15:53:01.1312181Z   🐳  docker create image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-37b430ba0d47759eb252de9b522ffe9b"
+2026-10-14T15:53:01.1731565Z   🐳  docker run image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-37b430ba0d47759eb252de9b522ffe9b"
+2026-10-14T15:53:01.3391915Z   ☁️  git clone 'https://data.forgejo.org/actions/checkout' # ref=d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T15:53:02.2154987Z   ☁️  git fetch 'https://data.forgejo.org/actions/checkout' # ref=d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T15:53:03.7909163Z   ☁️  git clone 'https://data.forgejo.org/actions/cache' # ref=caa296126883cff596d87d8935842f9db880ef25
+2026-10-14T15:53:04.6654977Z   ☁️  git fetch 'https://data.forgejo.org/actions/cache' # ref=caa296126883cff596d87d8935842f9db880ef25
+2026-10-14T15:53:06.4724577Z ⭐ Run Main actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T15:53:06.4778076Z   🐳  docker cp src=/data/.cache/act/26/9684f4f73bb07089d7b4b382cb7c626f7e1e28f019489fc19c227e8ed97a31/ dst=/var/run/act/actions/26/9684f4f73bb07089d7b4b382cb7c626f7e1e28f019489fc19c227e8ed97a31/
+2026-10-14T15:53:06.6164296Z   🐳  docker exec cmd=[node /var/run/act/actions/26/9684f4f73bb07089d7b4b382cb7c626f7e1e28f019489fc19c227e8ed97a31/dist/index.js] user= workdir=
+2026-10-14T15:53:07.0055950Z   ❓ add-matcher /run/act/actions/26/9684f4f73bb07089d7b4b382cb7c626f7e1e28f019489fc19c227e8ed97a31/dist/problem-matcher.json
+2026-10-14T15:53:07.0056096Z ::add-matcher::/run/act/actions/26/9684f4f73bb07089d7b4b382cb7c626f7e1e28f019489fc19c227e8ed97a31/dist/problem-matcher.json
+2026-10-14T15:53:07.0059198Z Syncing repository: apps/hello
+2026-10-14T15:53:07.0061596Z ##[group]Getting Git version info
+2026-10-14T15:53:07.0061984Z Working directory is '/workspace/apps/hello'
+2026-10-14T15:53:07.0087457Z [command]/usr/bin/git version
+2026-10-14T15:53:07.0115955Z git version 2.39.5
+2026-10-14T15:53:07.0132119Z ##[endgroup]
+2026-10-14T15:53:07.0142559Z Temporarily overriding HOME='/tmp/296034c5-43be-4fae-9e25-5c008220fc6f' before making global git config changes
+2026-10-14T15:53:07.0142757Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T15:53:07.0146274Z [command]/usr/bin/git config --global --add safe.directory /workspace/apps/hello
+2026-10-14T15:53:07.0169363Z Deleting the contents of '/workspace/apps/hello'
+2026-10-14T15:53:07.0172261Z ##[group]Determining repository object format
+2026-10-14T15:53:07.0173907Z ##[endgroup]
+2026-10-14T15:53:07.0174069Z ##[group]Initializing the repository
+2026-10-14T15:53:07.0177344Z [command]/usr/bin/git init /workspace/apps/hello
+2026-10-14T15:53:07.0198900Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-14T15:53:07.0199120Z hint: is subject to change. To configure the initial branch name to use in all
+2026-10-14T15:53:07.0199176Z hint: of your new repositories, which will suppress this warning, call:
+2026-10-14T15:53:07.0199226Z hint: 
+2026-10-14T15:53:07.0199270Z hint: 	git config --global init.defaultBranch <name>
+2026-10-14T15:53:07.0199316Z hint: 
+2026-10-14T15:53:07.0199363Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-14T15:53:07.0199411Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-14T15:53:07.0199459Z hint: 
+2026-10-14T15:53:07.0199503Z hint: 	git branch -m <name>
+2026-10-14T15:53:07.0202934Z Initialized empty Git repository in /workspace/apps/hello/.git/
+2026-10-14T15:53:07.0209676Z [command]/usr/bin/git remote add origin https://git.lab.test/apps/hello
+2026-10-14T15:53:07.0231108Z ##[endgroup]
+2026-10-14T15:53:07.0231272Z ##[group]Disabling automatic garbage collection
+2026-10-14T15:53:07.0234251Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-14T15:53:07.0253667Z ##[endgroup]
+2026-10-14T15:53:07.0253807Z ##[group]Setting up auth
+2026-10-14T15:53:07.0254880Z Removing SSH command configuration
+2026-10-14T15:53:07.0259125Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T15:53:07.0280864Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T15:53:07.0445982Z Removing HTTP extra header
+2026-10-14T15:53:07.0449273Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T15:53:07.0468646Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T15:53:07.0665040Z Removing includeIf entries pointing to credentials config files
+2026-10-14T15:53:07.0670110Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T15:53:07.0691663Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T15:53:07.0895973Z [command]/usr/bin/git config --file /tmp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config http.https://git.lab.test/.extraheader AUTHORIZATION: basic ***
+2026-10-14T15:53:07.0920954Z [command]/usr/bin/git config --local includeIf.gitdir:/workspace/apps/hello/.git.path /tmp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.0941209Z [command]/usr/bin/git config --local includeIf.gitdir:/workspace/apps/hello/.git/worktrees/*.path /tmp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.0960122Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.0978786Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.0996077Z ##[endgroup]
+2026-10-14T15:53:07.0996230Z ##[group]Fetching the repository
+2026-10-14T15:53:07.1003125Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-14T15:53:07.3860087Z From https://git.lab.test/apps/hello
+2026-10-14T15:53:07.3861096Z  * [new branch]      main       -> origin/main
+2026-10-14T15:53:07.3973192Z [command]/usr/bin/git branch --list --remote origin/main
+2026-10-14T15:53:07.4061824Z   origin/main
+2026-10-14T15:53:07.4096965Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-10-14T15:53:07.4184524Z a5c3bf79326186aeceb76c69f4246c968bc622b5
+2026-10-14T15:53:07.4200271Z ##[endgroup]
+2026-10-14T15:53:07.4201096Z ##[group]Determining the checkout info
+2026-10-14T15:53:07.4205592Z ##[endgroup]
+2026-10-14T15:53:07.4226264Z [command]/usr/bin/git sparse-checkout disable
+2026-10-14T15:53:07.4368923Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-14T15:53:07.4475247Z ##[group]Checking out the ref
+2026-10-14T15:53:07.4490862Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-14T15:53:07.4731120Z Switched to a new branch 'main'
+2026-10-14T15:53:07.4734464Z branch 'main' set up to track 'origin/main'.
+2026-10-14T15:53:07.4748717Z ##[endgroup]
+2026-10-14T15:53:07.4888352Z [command]/usr/bin/git log -1 --format=%H
+2026-10-14T15:53:07.4981982Z a5c3bf79326186aeceb76c69f4246c968bc622b5
+2026-10-14T15:53:07.5015934Z ##[group]Removing auth
+2026-10-14T15:53:07.5016413Z Removing SSH command configuration
+2026-10-14T15:53:07.5030948Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T15:53:07.5142372Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T15:53:07.6202068Z Removing HTTP extra header
+2026-10-14T15:53:07.6218694Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T15:53:07.6328852Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T15:53:07.7401997Z Removing includeIf entries pointing to credentials config files
+2026-10-14T15:53:07.7417532Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T15:53:07.7511931Z includeif.gitdir:/workspace/apps/hello/.git.path
+2026-10-14T15:53:07.7512917Z includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path
+2026-10-14T15:53:07.7513461Z includeif.gitdir:/github/workspace/.git.path
+2026-10-14T15:53:07.7513963Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-14T15:53:07.7545606Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/workspace/apps/hello/.git.path
+2026-10-14T15:53:07.7628060Z /tmp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.7664301Z [command]/usr/bin/git config --local --unset includeif.gitdir:/workspace/apps/hello/.git.path /tmp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.7795084Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path
+2026-10-14T15:53:07.7904158Z /tmp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.7942491Z [command]/usr/bin/git config --local --unset includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path /tmp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.8078056Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-14T15:53:07.8165439Z /github/runner_temp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.8194514Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.8313369Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-14T15:53:07.8393104Z /github/runner_temp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.8425364Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config
+2026-10-14T15:53:07.8561672Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T15:53:07.9573739Z Removing credentials config '/tmp/git-credentials-d82697ed-041b-43ca-9f43-067864450225.config'
+2026-10-14T15:53:07.9610759Z ##[endgroup]
+2026-10-14T15:53:07.9622959Z ::remove-matcher owner=checkout-git::
+2026-10-14T15:53:08.6923427Z Cache not found for input keys: go-b56cbce38208008fffd6f6a3a9fd3a30f7fa773760ef68acb486b0c4c285b50c
+2026-10-14T15:53:09.2906189Z [32mtask: [check:fast] out="$(gofmt -l .)"; [ -z "$out" ] || { echo "gofmt needed:"; echo "$out"; exit 1; }
+2026-10-14T15:53:09.3192401Z [0m[32mtask: [check:fast] go vet ./...
+2026-10-14T15:53:09.3652616Z [0mgo: downloading github.com/jackc/pgx/v5 v5.11.0
+2026-10-14T15:53:13.3041689Z go: downloading github.com/jackc/puddle/v2 v2.2.2
+2026-10-14T15:53:13.3111572Z go: downloading github.com/jackc/pgpassfile v1.0.0
+2026-10-14T15:53:13.9898729Z go: downloading github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761
+2026-10-14T15:53:14.0012692Z go: downloading golang.org/x/text v0.29.0
+2026-10-14T15:53:15.6326693Z go: downloading golang.org/x/sync v0.17.0
+2026-10-14T15:54:38.9332341Z [32mtask: [check:fast] go test -short -count=1 ./...
+2026-10-14T15:54:57.1751068Z [0mok  	example.com/hello/cmd/hello	0.014s
+2026-10-14T15:54:57.1752384Z ?   	example.com/hello/internal/store	[no test files]
+2026-10-14T15:54:57.2712043Z [32mtask: [secrets] if git rev-parse -q --verify "origin/main" >/dev/null; then gitleaks git --redact --no-banner --log-opts="origin/main..HEAD" .; else gitleaks git --redact --no-banner .; fi
+2026-10-14T15:54:58.3620824Z [0m[90m3:54PM[0m [32mINF[0m [1mUnknown SCM platform. Use --platform to include links in findings.[0m [36mhost=[0mgit.lab.test
+2026-10-14T15:54:58.3621155Z [90m3:54PM[0m [32mINF[0m [1m0 commits scanned.[0m
+2026-10-14T15:54:58.3621280Z [90m3:54PM[0m [32mINF[0m [1mscanned ~0 bytes (0) in 403ms[0m
+2026-10-14T15:54:58.3621338Z [90m3:54PM[0m [32mINF[0m [1mno leaks found[0m
+2026-10-14T15:54:58.3650427Z [32mtask: [workflows] actionlint .forgejo/workflows/*.yml
+2026-10-14T15:54:58.3696100Z [0m.forgejo/workflows/pipeline.yml:17:14: label "ci" is unknown. available labels are "windows-latest", "windows-latest-8-cores", "windows-2025", "windows-2025-vs2026", "windows-2022", "windows-11-arm", "ubuntu-slim", "ubuntu-latest", "ubuntu-latest-4-cores", "ubuntu-latest-8-cores", "ubuntu-latest-16-cores", "ubuntu-24.04", "ubuntu-24.04-arm", "ubuntu-22.04", "ubuntu-22.04-arm", "macos-latest", "macos-latest-xlarge", "macos-latest-large", "macos-26-intel", "macos-26-xlarge", "macos-26-large", "macos-26", "macos-15-intel", "macos-15-xlarge", "macos-15-large", "macos-15", "macos-14-xlarge", "macos-14-large", "macos-14", "self-hosted", "x64", "arm", "arm64", "linux", "macos", "windows". if it is a custom label for self-hosted runner, set list of labels in actionlint.yaml config file [runner-label]
+2026-10-14T15:54:58.3696435Z    |
+2026-10-14T15:54:58.3696523Z 17 |     runs-on: ci                                   # CI lane: no secrets referenced here
+2026-10-14T15:54:58.3696609Z    |              ^~
+2026-10-14T15:54:58.3696659Z .forgejo/workflows/pipeline.yml:47:14: label "deploy" is unknown. available labels are "windows-latest", "windows-latest-8-cores", "windows-2025", "windows-2025-vs2026", "windows-2022", "windows-11-arm", "ubuntu-slim", "ubuntu-latest", "ubuntu-latest-4-cores", "ubuntu-latest-8-cores", "ubuntu-latest-16-cores", "ubuntu-24.04", "ubuntu-24.04-arm", "ubuntu-22.04", "ubuntu-22.04-arm", "macos-latest", "macos-latest-xlarge", "macos-latest-large", "macos-26-intel", "macos-26-xlarge", "macos-26-large", "macos-26", "macos-15-intel", "macos-15-xlarge", "macos-15-large", "macos-15", "macos-14-xlarge", "macos-14-large", "macos-14", "self-hosted", "x64", "arm", "arm64", "linux", "macos", "windows". if it is a custom label for self-hosted runner, set list of labels in actionlint.yaml config file [runner-label]
+2026-10-14T15:54:58.3696787Z    |
+2026-10-14T15:54:58.3696829Z 47 |     runs-on: deploy
+2026-10-14T15:54:58.3696871Z    |              ^~~~~~
+2026-10-14T15:54:58.3698866Z [31mtask: Failed to run task "ci": task: Failed to run task "check": task: Failed to run task "workflows": exit status 1
+2026-10-14T15:54:58.3699096Z [0m::error title=Task 'ci' failed::task: Failed to run task "check": task: Failed to run task "workflows": exit status 1
+2026-10-14T15:54:58.3784913Z ⚙️ [runner]: exitcode '201': failure
+2026-10-14T15:54:58.3799322Z   🐳  docker exec cmd=[node /var/run/act/workflow/hashfiles/index.js] user= workdir=
+2026-10-14T15:54:58.4522930Z Skipping step 'Go module + build cache (runner's LAN cache server)' due to 'success()'
+2026-10-14T15:54:58.4579459Z ⭐ Run Post actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T15:54:58.4598771Z   🐳  docker exec cmd=[node /var/run/act/actions/26/9684f4f73bb07089d7b4b382cb7c626f7e1e28f019489fc19c227e8ed97a31/dist/index.js] user= workdir=
+2026-10-14T15:54:58.5920395Z [command]/usr/bin/git version
+2026-10-14T15:54:58.5967837Z git version 2.39.5
+2026-10-14T15:54:58.6001282Z   ⚙  ***
+2026-10-14T15:54:58.6022429Z Temporarily overriding HOME='/tmp/c797fdcd-6563-44bf-b6f5-5dc7f9842115' before making global git config changes
+2026-10-14T15:54:58.6022755Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T15:54:58.6029137Z [command]/usr/bin/git config --global --add safe.directory /workspace/apps/hello
+2026-10-14T15:54:58.6064156Z Removing SSH command configuration
+2026-10-14T15:54:58.6071892Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T15:54:58.6109447Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T15:54:58.6413842Z Removing HTTP extra header
+2026-10-14T15:54:58.6421623Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T15:54:58.6468763Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T15:54:58.7278435Z Removing includeIf entries pointing to credentials config files
+2026-10-14T15:54:58.7310549Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T15:54:58.7461714Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T15:54:58.8803299Z   ✅  Success - Post actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T15:54:58.9466823Z 🏁  Job failed
+2026-10-14T15:54:59.8439280Z Job 'ci' failed

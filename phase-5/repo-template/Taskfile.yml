@@ -1,0 +1,80 @@
+# The CHECK CONTRACT. Hooks, AI agents and every CI system call these tasks — never re-implement checks in YAML.
+# Example stack: TypeScript app with pnpm + Postgres. Swap the `cmds` for Python (uv/ruff/mypy/pytest) or Go
+# (gofmt/golangci-lint/go test) — the task NAMES are the contract and must stay the same across repos.
+# Tools expected on PATH (laptop via mise/brew; CI via the pinned ci-base image): task, pnpm, node>=24, gitleaks,
+# osv-scanner, semgrep, actionlint, zizmor, docker (buildx), syft, grype.
+version: "3"
+
+vars:
+  BASE_REF: '{{.BASE_REF | default "origin/main"}}'
+  IMAGE: '{{.IMAGE | default "app:ci"}}'
+
+tasks:
+  deps:
+    desc: Install dependencies from the lockfile only (no lockfile drift, no install scripts)
+    cmds:
+      - pnpm install --frozen-lockfile --ignore-scripts
+    sources: [pnpm-lock.yaml, package.json]
+
+  # ---------- L0: agent loop (< 60 s) ----------
+  check:fast:
+    desc: Fast gate for AI agents before they say "done" (changed files + affected unit tests)
+    deps: [deps]
+    vars:
+      CHANGED:
+        sh: git diff --name-only --diff-filter=ACMR {{.BASE_REF}} -- '*.ts' '*.tsx' | tr '\n' ' '
+    cmds:
+      - '[ -z "{{.CHANGED}}" ] || pnpm exec prettier --check {{.CHANGED}}'
+      - '[ -z "{{.CHANGED}}" ] || pnpm exec eslint --max-warnings=0 {{.CHANGED}}'
+      - pnpm exec tsc --noEmit --incremental
+      - pnpm exec vitest run --changed {{.BASE_REF}} --passWithNoTests
+
+  # ---------- L2: pre-push (< 2 min) ----------
+  check:
+    desc: Full local gate (same as CI minus services/image)
+    deps: [deps]
+    cmds:
+      - task: lint
+      - task: typecheck
+      - task: test:unit
+      - task: build
+      - task: secrets
+      - task: audit
+      - task: sast
+      - task: workflows
+
+  lint:       { cmds: ["pnpm exec prettier --check .", "pnpm exec eslint --max-warnings=0 ."] }
+  typecheck:  { cmds: ["pnpm exec tsc --noEmit"] }
+  test:unit:  { cmds: ["pnpm exec vitest run --coverage"] }
+  build:      { cmds: ["pnpm run build"] }
+  secrets:
+    desc: Secret scan of everything not yet on the base branch (agents sometimes commit with --no-verify)
+    cmds: ["gitleaks git --redact --log-opts='{{.BASE_REF}}..HEAD'"]
+  audit:
+    desc: Known-vulnerable dependencies (OSV)
+    cmds: ["osv-scanner scan source --recursive ."]
+  sast:
+    desc: SAST with a VENDORED, pinned ruleset (no rules fetched at runtime)
+    cmds: ["semgrep scan --config .semgrep/ --error --metrics=off"]
+  workflows:
+    desc: Lint + security-lint CI definitions (catches expression injection like the Nx/s1ngularity entry point)
+    cmds:
+      # explicit -config-file: actionlint auto-discovers .github/actionlint.yaml only for .github/workflows,
+      # so the self-hosted labels (ci, deploy) were "unknown" when linting .forgejo/workflows (lab 2026-10-14)
+      - actionlint -config-file .github/actionlint.yaml .github/workflows/*.yml .forgejo/workflows/*.yml
+      - zizmor --offline .github/workflows/ .forgejo/workflows/
+
+  # ---------- L3: server CI (< 10 min) ----------
+  ci:
+    desc: Everything the server gate runs. Expects DATABASE_URL (a `services:` Postgres in CI).
+    cmds:
+      - task: check
+      - pnpm exec vitest run --project integration
+      - task: image
+
+  image:
+    desc: Build the container image (no push), SBOM + vulnerability gate
+    cmds:
+      - docker buildx build --pull --load -t {{.IMAGE}} .
+      - syft {{.IMAGE}} -o spdx-json=sbom.spdx.json
+      - grype {{.IMAGE}} --fail-on high

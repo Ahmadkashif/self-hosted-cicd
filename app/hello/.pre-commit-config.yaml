@@ -1,0 +1,40 @@
+# L1 (pre-commit, < 10 s) and L2 (pre-push, < 2 min). prek (or pre-commit):
+#   prek install --hook-type pre-commit --hook-type pre-push
+default_install_hook_types: [pre-commit, pre-push]
+default_stages: [pre-commit]
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: detect-private-key
+        exclude: ^config/known_hosts$
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+        args: [-config-file, .github/actionlint.yaml]   # not auto-discovered for .forgejo/workflows
+        files: ^\.(github|forgejo)/workflows/.*\.ya?ml$
+  - repo: local
+    hooks:
+      - id: gofmt
+        name: gofmt -l (staged Go files)
+        entry: scripts/gofmt-check.sh
+        language: system
+        types: [go]
+      - id: task-check
+        name: task check (full local gate, L2)
+        entry: task check
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]

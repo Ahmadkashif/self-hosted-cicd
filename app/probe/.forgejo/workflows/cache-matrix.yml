@@ -1,0 +1,29 @@
+# actions/cache v4.3.0 (node20) / v5.1.0 / v6.1.0 against the runner's built-in cache server (v1 protocol).
+# Run twice: run 1 saves (cache-hit=false), run 2 restores (cache-hit=true).
+name: cache-matrix
+on: [workflow_dispatch]
+jobs:
+  v4:
+    runs-on: ci
+    steps:
+      - run: mkdir -p blob && head -c 20000000 /dev/urandom > blob/data && echo seed > blob/seed
+      - id: c
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with: { path: blob, key: probe-v4-fixed }
+      - run: echo "actions/cache v4.3.0 cache-hit=${{ steps.c.outputs.cache-hit }} node=$(node --version)"
+  v5:
+    runs-on: ci
+    steps:
+      - run: mkdir -p blob && head -c 20000000 /dev/urandom > blob/data
+      - id: c
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with: { path: blob, key: probe-v5-fixed }
+      - run: echo "actions/cache v5.1.0 cache-hit=${{ steps.c.outputs.cache-hit }}"
+  v6:
+    runs-on: ci
+    steps:
+      - run: mkdir -p blob && head -c 20000000 /dev/urandom > blob/data
+      - id: c
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with: { path: blob, key: probe-v6-fixed }
+      - run: echo "actions/cache v6.1.0 cache-hit=${{ steps.c.outputs.cache-hit }}"

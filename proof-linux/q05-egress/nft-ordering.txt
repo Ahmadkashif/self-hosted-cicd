@@ -1,0 +1,12 @@
+--- nft counters (reject rules) after probes
+		meta l4proto { tcp, udp } th dport { 53, 853 } counter packets 8 bytes 480 reject with icmpx admin-prohibited
+		ip daddr @private_v4 counter packets 14 bytes 840 reject with icmpx admin-prohibited
+		type filter hook forward priority filter - 1; policy accept;
+		type filter hook output priority filter - 1; policy accept;
+--- hook priorities on the forward hook (lower runs first)
+	chain forward {
+		type filter hook forward priority filter - 1; policy accept;
+	chain FORWARD {
+		type filter hook forward priority filter; policy accept;
+	chain FORWARD {
+		type filter hook forward priority filter; policy accept;

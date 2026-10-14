@@ -1,0 +1,11 @@
+$ sudo nft -c -f build/shared-verify/nftables.conf
+nft -c: OK (exit 0)
+$ python3 -c json.load dind-daemon.json
+json OK
+$ python3 tomllib check of every *.toml (phase-6 GARM templates)
+TOML OK mac-source/phase-6/templates/garm/config.toml
+TOML OK mac-source/phase-6/templates/garm/garm-provider-incus.toml
+$ nft -c on the UNMODIFIED Mac template (rendered small, example site)
+mac nft OK
+$ caddy validate on the UNMODIFIED Mac Caddyfile
+Valid configuration

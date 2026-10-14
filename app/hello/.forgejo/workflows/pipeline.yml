@@ -1,0 +1,88 @@
+# L3 (ci) + L4 (release) on the home forge. Thin wrapper: every check lives in Taskfile.yml.
+# Actions are pinned to full SHAs (identical on github.com and data.forgejo.org).
+name: pipeline
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    runs-on: ci                                   # CI lane: no secrets referenced here
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: ci-only-not-a-secret
+          POSTGRES_DB: app_test
+    env:
+      BASE_REF: origin/${{ github.base_ref || 'main' }}
+      DATABASE_URL: postgres://postgres:ci-only-not-a-secret@postgres:5432/app_test?sslmode=disable
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Go module + build cache (runner's LAN cache server)
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: go-${{ hashFiles('go.sum') }}
+      - name: task ci
+        run: task ci BASE_REF="$BASE_REF" VERSION="$GITHUB_SHA"
+
+  release:
+    # L4: pushes to protected main only (branch protection: PR + required ci check, no direct/force push).
+    needs: [ci]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: deploy
+    timeout-minutes: 20
+    env:
+      REGISTRY: ${{ vars.REGISTRY_HOST }}
+      IMAGE: ${{ vars.REGISTRY_HOST }}/${{ github.repository }}
+      VERSION: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Registry login (bot user, write:package scope only)
+        env:
+          REGISTRY_USER: ${{ vars.REGISTRY_USER }}
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+        run: printf '%s' "$REGISTRY_TOKEN" | docker login "$REGISTRY" -u "$REGISTRY_USER" --password-stdin
+      - name: Build and push by digest
+        run: |
+          # BuildKit runs in its own container: hand it the private CA baked into deploy-base (tls internal)
+          cfg="$(mktemp)"
+          for ca in /usr/local/share/ca-certificates/extra/*.crt; do
+            [ -f "$ca" ] && printf '[registry."%s"]\n  ca = ["%s"]\n' "$REGISTRY" "$ca" > "$cfg"
+          done
+          docker buildx create --use --name release --driver docker-container --buildkitd-config "$cfg"
+          docker buildx build --pull --push --provenance=true --sbom=true \
+            --build-arg VERSION="$VERSION" --metadata-file build-meta.json -t "$IMAGE:$VERSION" .
+          digest="$(jq -r '."containerimage.digest"' build-meta.json)"
+          echo "pushed $IMAGE:$VERSION@$digest"
+          echo "DIGEST=$digest" >> "$GITHUB_ENV"
+      - name: Deploy with Kamal (health-gated; old version keeps serving on failure)
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          eval "$(ssh-agent -s)"
+          printf '%s\n' "$DEPLOY_SSH_KEY" | ssh-add -
+          mkdir -p ~/.ssh && cp config/known_hosts ~/.ssh/known_hosts
+          kamal deploy --skip-push --version="$VERSION"
+      - name: Cleanup
+        if: always()
+        run: |
+          docker buildx rm release || true
+          docker logout "$REGISTRY" || true

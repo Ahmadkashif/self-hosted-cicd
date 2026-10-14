@@ -1,0 +1,11 @@
+allow-list test (Caddy remote_ip): expected trusted 200, runner 200, target 200, outsider 403
+trusted admin 10.77.0.1   -> 200
+outsider     10.77.0.99   -> 403
+outsider mirror 10.77.0.99 -> 403
+runner VM 10.78.0.20 -> 200
+target VM 10.77.0.30 -> 200
+anonymous API (REQUIRE_SIGNIN_VIEW) /api/v1/repos/search -> 403
+anonymous /explore/repos -> 303
+sign-up page: Registration is disabled
+mirror /v2/ (trusted) -> 200
+forgejo :3000 from LAN (not published) -> 000

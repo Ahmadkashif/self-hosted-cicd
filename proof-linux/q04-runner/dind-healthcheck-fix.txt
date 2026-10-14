@@ -1,0 +1,14 @@
+ Network ci-runner_deploy  Removed
+ Container ci-runner-dind-deploy-1  Started
+ Container ci-runner-dind-ci-1  Started
+ Container ci-runner-dind-deploy-1  Healthy
+ Container ci-runner-dind-ci-1  Healthy
+ Container ci-runner-runner-deploy-1  Started
+ Container ci-runner-runner-ci-1  Started
+ Container ci-runner-runner-deploy-1  Healthy
+ Container ci-runner-dind-deploy-1  Healthy
+ Container ci-runner-runner-ci-1  Healthy
+ Container ci-runner-dind-ci-1  Healthy
+up --wait took 8s
+runner-ci: 0 ping errors; declared successfully
+runner-deploy: 0 ping errors; declared successfully

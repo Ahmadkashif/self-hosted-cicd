@@ -1,0 +1,15 @@
+2026-10-14T16:16:26.2194492Z Runner 00000000-0000-0000-0000-00000000c1c1 (version:v13.2.0) received task 15 of job try, triggered by event: workflow_dispatch
+2026-10-14T16:16:26.2209870Z workflow prepared
+2026-10-14T16:16:26.2252839Z 🚀  Start image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb
+2026-10-14T16:16:26.2370915Z Cleaning up network for job try, and network name is: WORKFLOW-d8eb6c65e54684d26a654e8ac63cf636
+2026-10-14T16:16:26.2520202Z   🐳  docker create image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-d8eb6c65e54684d26a654e8ac63cf636"
+2026-10-14T16:16:26.2673085Z   🐳  docker run image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-d8eb6c65e54684d26a654e8ac63cf636"
+2026-10-14T16:16:26.4142903Z ⭐ Run Main generic package upload with the automatic token
+2026-10-14T16:16:26.4168668Z   🐳  docker exec cmd=[sh /var/run/act/61ceeb94a565a52b.sh] user= workdir=
+2026-10-14T16:16:26.4502603Z   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/0.sh] user= workdir=
+2026-10-14T16:16:26.5301502Z generic upload with automatic token -> HTTP 401: reqPackageAccess
+2026-10-14T16:16:26.6308675Z Login Succeeded
+2026-10-14T16:16:26.8824183Z 8b48e1412bff: Waiting
+2026-10-14T16:16:26.8824647Z unknown: unexpected status from HEAD request to https://git.lab.test/v2/apps/token-probe/blobs/sha256:54a1858b9e41126a0ee3a8f1c2fc90aec39c55ae185aeac470b66c8456c22baf: 401 Unauthorized
+2026-10-14T16:16:26.9355953Z packages now in org apps: {"message":"user should have specific permission or be a site admin","url":"https://git.lab.test/api/swagger"}
+2026-10-14T16:16:26.9441145Z 🏁  Job succeeded

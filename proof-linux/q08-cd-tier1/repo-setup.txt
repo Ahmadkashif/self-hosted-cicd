@@ -1,0 +1,5 @@
+secret REGISTRY_TOKEN: 201
+secret DEPLOY_SSH_KEY: 201
+[{"name":"REGISTRY_HOST","data":"git.lab.test"},{"name":"REGISTRY_USER","data":"ci-bot"}]
+Warning: Permanently added '[git.lab.test]:2222' (RSA) to the list of known hosts.
+Hi there, forgeadmin! You've successfully authenticated with the key named dev-workstation, but Forgejo does not provide shell access.

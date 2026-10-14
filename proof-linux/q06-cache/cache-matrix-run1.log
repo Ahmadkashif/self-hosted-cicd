@@ -1,0 +1,67 @@
+2026-10-14T16:15:28.2934950Z Runner 00000000-0000-0000-0000-00000000c1c1 (version:v13.2.0) received task 12 of job v4, triggered by event: workflow_dispatch
+2026-10-14T16:15:28.2968341Z workflow prepared
+2026-10-14T16:15:28.3050717Z 🚀  Start image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb
+2026-10-14T16:15:28.3437826Z Cleaning up network for job v4, and network name is: WORKFLOW-0ba3ed9ab56d4fc503f561d3a65d15f2
+2026-10-14T16:15:28.4425696Z   🐳  docker create image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-0ba3ed9ab56d4fc503f561d3a65d15f2"
+2026-10-14T16:15:28.5240405Z   🐳  docker run image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-0ba3ed9ab56d4fc503f561d3a65d15f2"
+2026-10-14T16:15:29.3029399Z   ☁️  git fetch 'https://data.forgejo.org/actions/cache' # ref=0057852bfaa89a56745cba8c7296529d2fc39830
+2026-10-14T16:15:31.2003053Z ⭐ Run Main mkdir -p blob && head -c 20000000 /dev/urandom > blob/data && echo seed > blob/seed
+2026-10-14T16:15:31.2039423Z   🐳  docker exec cmd=[sh /var/run/act/b32f43fe8e3ad3f0.sh] user= workdir=
+2026-10-14T16:15:31.2423934Z   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/0.sh] user= workdir=
+2026-10-14T16:15:31.3272935Z   ✅  Success - Main mkdir -p blob && head -c 20000000 /dev/urandom > blob/data && echo seed > blob/seed
+2026-10-14T16:15:31.5244608Z (node:33) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T16:15:31.5244815Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T16:15:31.5441878Z Cache not found for input keys: probe-v4-fixed
+2026-10-14T16:15:31.6446946Z actions/cache v4.3.0 cache-hit= node=v24.21.0
+2026-10-14T16:15:31.6524896Z ⭐ Run Post actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+2026-10-14T16:15:31.6539781Z   🐳  docker exec cmd=[node /var/run/act/actions/30/f5035dadefa2d6c15c3b07be3dd4c3692d2be22ab971104f77c0dd20a2bd57/dist/save/index.js] user= workdir=
+2026-10-14T16:15:31.7724748Z (node:63) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T16:15:31.7724939Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T16:15:31.7843777Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /workspace/apps/probe --files-from manifest.txt --use-compress-program zstdmt
+2026-10-14T16:15:31.8779089Z Cache Size: ~19 MB (20001095 B)
+2026-10-14T16:15:31.8995618Z Cache saved successfully
+2026-10-14T16:15:31.9020117Z Cache saved with key: probe-v4-fixed
+2026-10-14T16:15:31.9080873Z   ✅  Success - Post actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+2026-10-14T16:15:31.9200681Z 🏁  Job succeeded
+2026-10-14T16:15:32.2256627Z Runner 00000000-0000-0000-0000-00000000c1c1 (version:v13.2.0) received task 13 of job v5, triggered by event: workflow_dispatch
+2026-10-14T16:15:32.2271349Z workflow prepared
+2026-10-14T16:15:32.2317790Z 🚀  Start image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb
+2026-10-14T16:15:32.2433292Z Cleaning up network for job v5, and network name is: WORKFLOW-ea488a36abaad45a9d0635848a531509
+2026-10-14T16:15:32.2586620Z   🐳  docker create image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-ea488a36abaad45a9d0635848a531509"
+2026-10-14T16:15:32.2783317Z   🐳  docker run image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-ea488a36abaad45a9d0635848a531509"
+2026-10-14T16:15:32.4275436Z   ☁️  git fetch 'https://data.forgejo.org/actions/cache' skipped; ref=caa296126883cff596d87d8935842f9db880ef25 cached
+2026-10-14T16:15:32.4777055Z ⭐ Run Main mkdir -p blob && head -c 20000000 /dev/urandom > blob/data
+2026-10-14T16:15:32.4807313Z   🐳  docker exec cmd=[sh /var/run/act/5baa1b3f54d47d11.sh] user= workdir=
+2026-10-14T16:15:32.5150141Z   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/0.sh] user= workdir=
+2026-10-14T16:15:32.5957478Z   ✅  Success - Main mkdir -p blob && head -c 20000000 /dev/urandom > blob/data
+2026-10-14T16:15:32.8094800Z Cache not found for input keys: probe-v5-fixed
+2026-10-14T16:15:32.8900755Z actions/cache v5.1.0 cache-hit=
+2026-10-14T16:15:32.8973507Z ⭐ Run Post actions/cache@caa296126883cff596d87d8935842f9db880ef25
+2026-10-14T16:15:32.8987006Z   🐳  docker exec cmd=[node /var/run/act/actions/ed/c614043d035f4108cf361bb265ac1a775def25e5363238e8a0958f54da9b61/dist/save/index.js] user= workdir=
+2026-10-14T16:15:33.0519202Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /workspace/apps/probe --files-from manifest.txt --use-compress-program zstdmt
+2026-10-14T16:15:33.1406179Z Cache Size: ~19 MB (20001051 B)
+2026-10-14T16:15:33.1604404Z Cache saved successfully
+2026-10-14T16:15:33.1628591Z Cache saved with key: probe-v5-fixed
+2026-10-14T16:15:33.1694189Z   ✅  Success - Post actions/cache@caa296126883cff596d87d8935842f9db880ef25
+2026-10-14T16:15:33.1814646Z 🏁  Job succeeded
+2026-10-14T16:15:34.2737330Z Runner 00000000-0000-0000-0000-00000000c1c1 (version:v13.2.0) received task 14 of job v6, triggered by event: workflow_dispatch
+2026-10-14T16:15:34.2752126Z workflow prepared
+2026-10-14T16:15:34.2802383Z 🚀  Start image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb
+2026-10-14T16:15:34.2951035Z Cleaning up network for job v6, and network name is: WORKFLOW-0bd00ceea74fc078f1d3ef0508fff64d
+2026-10-14T16:15:34.3151986Z   🐳  docker create image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-0bd00ceea74fc078f1d3ef0508fff64d"
+2026-10-14T16:15:34.3299408Z   🐳  docker run image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-0bd00ceea74fc078f1d3ef0508fff64d"
+2026-10-14T16:15:34.4813011Z   ☁️  git fetch 'https://data.forgejo.org/actions/cache' # ref=55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-10-14T16:16:23.7002226Z ⭐ Run Main mkdir -p blob && head -c 20000000 /dev/urandom > blob/data
+2026-10-14T16:16:23.7042533Z   🐳  docker exec cmd=[sh /var/run/act/8f094dfd3c7b0f5b.sh] user= workdir=
+2026-10-14T16:16:23.7480311Z   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/0.sh] user= workdir=
+2026-10-14T16:16:23.8352322Z   ✅  Success - Main mkdir -p blob && head -c 20000000 /dev/urandom > blob/data
+2026-10-14T16:16:24.4351161Z Cache not found for input keys: probe-v6-fixed
+2026-10-14T16:16:24.5206582Z actions/cache v6.1.0 cache-hit=
+2026-10-14T16:16:24.5292033Z ⭐ Run Post actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-10-14T16:16:24.5307408Z   🐳  docker exec cmd=[node /var/run/act/actions/f8/d23b27c6b18c35c6ca1dc58ea60b69110c68df4ebceb8938a1e823ccfc27c3/dist/save/index.js] user= workdir=
+2026-10-14T16:16:24.6862809Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /workspace/apps/probe --files-from manifest.txt --use-compress-program zstdmt
+2026-10-14T16:16:24.7773468Z Cache Size: ~19 MB (20001053 B)
+2026-10-14T16:16:24.7980478Z Cache saved successfully
+2026-10-14T16:16:24.8005445Z Cache saved with key: probe-v6-fixed
+2026-10-14T16:16:24.8052417Z   ✅  Success - Post actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-10-14T16:16:24.8217332Z 🏁  Job succeeded

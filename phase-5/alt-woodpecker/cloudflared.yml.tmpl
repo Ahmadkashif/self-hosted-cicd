@@ -1,0 +1,9 @@
+# Cloudflare Tunnel ingress for Woodpecker webhooks ONLY. Everything else on the hostname returns 404.
+# (Tailscale alternative: `tailscale funnel --set-path /api/hook ...` to the same local port.)
+tunnel: ${CF_TUNNEL_ID}
+credentials-file: /etc/cloudflared/${CF_TUNNEL_ID}.json
+ingress:
+  - hostname: ci-hooks.example.com
+    path: ^/api/hook
+    service: http://127.0.0.1:8000
+  - service: http_status:404

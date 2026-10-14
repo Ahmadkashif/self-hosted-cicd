@@ -1,0 +1,3 @@
+# Forgejo runner labels used by this repo's workflows (.forgejo/workflows)
+self-hosted-runner:
+  labels: [ci, deploy]

@@ -1,0 +1,32 @@
+# Kamal 2: `kamal deploy --skip-push --version=<git sha>` from the deploy lane.
+# kamal-proxy switches traffic only after GET /up returns 200; otherwise the old container keeps serving.
+service: hello
+image: apps/hello                    # + registry.server => git.lab.test/apps/hello
+
+servers:
+  web:
+    hosts:
+      - 10.77.0.30                   # must be in DEPLOY_TARGETS (runner VM egress) and the Caddy allow-list
+
+proxy:
+  host: app.lab.test
+  ssl: false
+  app_port: 3000
+  healthcheck:
+    path: /up
+    interval: 1
+    timeout: 3
+
+deploy_timeout: 20                   # seconds kamal-proxy waits for /up before giving up on the new version
+
+registry:
+  server: git.lab.test               # Forgejo's built-in OCI registry
+  username: ci-bot
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+
+ssh:
+  user: deploy                       # docker group on the target = root-equivalent: dedicated key, deploy lane only

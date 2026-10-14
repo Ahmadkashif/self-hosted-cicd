@@ -1,0 +1,64 @@
+# ALTERNATIVE B — Woodpecker CI v3 for repos spread over GitHub / GitLab / Forgejo. TEMPLATE ONLY.
+# Run this whole file INSIDE the runner VM (the agent drives a privileged dind). Differences from the upstream
+# example: WOODPECKER_OPEN=false + explicit admins/orgs, no host docker.sock mount, UI on LAN/Tailscale while
+# the forge's webhooks arrive on a separate public hostname that exposes ONLY /api/hook (cloudflared.yml.tmpl).
+name: ci-woodpecker
+
+services:
+  woodpecker-server:
+    image: woodpeckerci/woodpecker-server:v3
+    restart: unless-stopped
+    environment:
+      WOODPECKER_HOST: https://ci.home.example                     # UI + OAuth callback (/authorize) — browser-side only
+      WOODPECKER_EXPERT_WEBHOOK_HOST: https://ci-hooks.example.com # what GitHub calls; tunnel routes /api/hook only
+      WOODPECKER_OPEN: "false"
+      WOODPECKER_ADMIN: your-github-login
+      WOODPECKER_REPO_OWNERS: your-github-login,your-org           # only these owners' repos can be enabled
+      WOODPECKER_GITHUB: "true"
+      WOODPECKER_GITHUB_CLIENT_FILE: /run/secrets/github_client
+      WOODPECKER_GITHUB_SECRET_FILE: /run/secrets/github_secret
+      WOODPECKER_AGENT_SECRET_FILE: /run/secrets/agent_secret
+    secrets: [github_client, github_secret, agent_secret]
+    volumes:
+      - ./data/server:/var/lib/woodpecker
+    ports:
+      - "127.0.0.1:8000:8000"                                      # fronted by Caddy/Tailscale; tunnel -> /api/hook
+    networks: [wp]
+
+  dind:
+    image: docker:28-dind
+    restart: unless-stopped
+    privileged: true                                               # inside the runner VM only
+    command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
+    mem_limit: ${DIND_CI_MEM_LIMIT:-8704m}
+    volumes:
+      - wp-dind:/var/lib/docker
+    networks: [wp]
+
+  woodpecker-agent:
+    image: woodpeckerci/woodpecker-agent:v3
+    command: agent
+    restart: unless-stopped
+    depends_on: [woodpecker-server, dind]
+    environment:
+      WOODPECKER_SERVER: woodpecker-server:9000                    # gRPC
+      WOODPECKER_AGENT_SECRET_FILE: /run/secrets/agent_secret
+      WOODPECKER_BACKEND: docker
+      DOCKER_HOST: tcp://dind:2375
+      WOODPECKER_MAX_WORKFLOWS: ${CI_SLOTS:-2}
+      WOODPECKER_BACKEND_DOCKER_LIMIT_MEM: ${CI_SLOT_MEM_BYTES:-4294967296}
+    secrets: [agent_secret]
+    volumes:
+      - ./data/agent:/etc/woodpecker
+    networks: [wp]
+
+secrets:
+  github_client: { file: ./secrets/github_client }
+  github_secret: { file: ./secrets/github_secret }
+  agent_secret:  { file: ./secrets/agent_secret }
+
+volumes:
+  wp-dind: {}
+
+networks:
+  wp: {}

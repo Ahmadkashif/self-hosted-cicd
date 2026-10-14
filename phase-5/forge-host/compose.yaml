@@ -1,0 +1,89 @@
+# Forge host — Forgejo (LTS) + Caddy + Docker Hub pull-through cache.
+# TEMPLATE ONLY — not deployed by this research. Render first (see ../README.md), then:
+#   docker compose --env-file ../build/<profile>/forge-host.env up -d
+# Everything here is reachable only from the LAN / Tailscale / runner subnet (Caddy allow-list).
+# There is deliberately NO public ingress: runners poll outbound, users come in over LAN/Tailscale.
+name: ci-forge
+
+services:
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:${FORGEJO_TAG}      # 15-rootless = LTS (supported to 2027-07-15)
+    restart: unless-stopped
+    user: "1000:1000"
+    mem_limit: ${FORGEJO_MEM_LIMIT}
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      # app.ini via FORGEJO__[SECTION]__[KEY] (documented in Forgejo docker install guide)
+      FORGEJO__server__DOMAIN: ${FORGE_DOMAIN}
+      FORGEJO__server__ROOT_URL: https://${FORGE_DOMAIN}/
+      FORGEJO__server__SSH_DOMAIN: ${FORGE_DOMAIN}
+      FORGEJO__server__SSH_PORT: ${FORGE_SSH_PORT}
+      FORGEJO__server__SSH_LISTEN_PORT: "2222"               # rootless image embeds sshd on 2222
+      FORGEJO__database__DB_TYPE: ${FORGEJO_DB}              # sqlite3 (profile S) | postgres (M, L)
+      FORGEJO__database__HOST: postgres:5432
+      FORGEJO__database__NAME: forgejo
+      FORGEJO__database__USER: forgejo
+      FORGEJO__database__PASSWD: ${FORGEJO_DB_PASSWORD}      # from secrets/forge.env (git-ignored)
+      FORGEJO__service__DISABLE_REGISTRATION: "true"
+      FORGEJO__service__REQUIRE_SIGNIN_VIEW: "true"
+      FORGEJO__repository__DEFAULT_PRIVATE: private
+      FORGEJO__actions__ENABLED: "true"
+      FORGEJO__actions__DEFAULT_ACTIONS_URL: https://data.forgejo.org   # mirror of github.com/actions/* (same SHAs)
+      FORGEJO__packages__ENABLED: "true"                    # OCI registry used by the deploy lane
+      FORGEJO__security__INSTALL_LOCK: "true"                # create the admin with `forgejo admin user create`
+    volumes:
+      - ./data/forgejo:/var/lib/gitea                       # rootless image: data + app.ini (custom/conf/app.ini)
+    ports:
+      - "${FORGE_BIND_IP}:${FORGE_SSH_PORT}:2222"            # bind to the LAN IP, not 0.0.0.0 (see site.env)                             # git over SSH (firewall to LAN/Tailscale)
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/healthz"]   # curl ships in the rootless image
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    networks: [forge]
+    depends_on:
+      postgres:
+        condition: service_healthy
+        required: false                                      # profile S runs without postgres
+
+  postgres:
+    profiles: ["postgres"]                                   # enable with COMPOSE_PROFILES=postgres (M, L)
+    image: postgres:${POSTGRES_TAG}
+    restart: unless-stopped
+    mem_limit: ${POSTGRES_MEM_LIMIT}
+    environment:
+      POSTGRES_USER: forgejo
+      POSTGRES_DB: forgejo
+      POSTGRES_PASSWORD: ${FORGEJO_DB_PASSWORD}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U forgejo -d forgejo"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [forge]
+
+  registry-mirror:
+    # Docker Hub pull-through cache (CNCF Distribution). One upstream only; Docker Hub only; must be served at a
+    # domain root. Avoids Docker Hub's 100 pulls / 6 h per-IP unauthenticated limit for CI.
+    image: registry:${REGISTRY_TAG}
+    restart: unless-stopped
+    mem_limit: ${REGISTRY_MEM_LIMIT}
+    volumes:
+      - ../build/${PROFILE}/registry-mirror.yml:/etc/distribution/config.yml:ro
+      - ./data/registry-mirror:/var/lib/registry
+    networks: [forge]
+
+  caddy:
+    image: caddy:${CADDY_TAG}
+    restart: unless-stopped
+    ports:
+      - "${FORGE_BIND_IP}:443:443"                          # never 0.0.0.0 on a box where something else owns :443
+    volumes:
+      - ../build/${PROFILE}/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data/caddy:/data
+    networks: [forge]
+
+networks:
+  forge: {}

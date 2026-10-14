@@ -1,0 +1,41 @@
+# Forgejo Runner v13 config — CI lane (rendered). Holds NO secrets; runs PR/branch jobs.
+# Registration (IaC, on the forge host):
+#   forgejo forgejo-cli actions register --name runner-ci-${PROFILE} --scope <org-or-user> \
+#       --secret "$(cat secrets/forgejo_runner_ci_token)"          # prints the UUID -> RUNNER_CI_UUID in site.env, re-render
+log:
+  level: info
+  job_level: info
+
+runner:
+  # capacity > 1 on one dockerd lets concurrent jobs see each other via the docker CLI (Forgejo docs).
+  # Acceptable for a no-secrets lane; for stricter isolation run N runner+dind pairs with capacity 1.
+  capacity: ${CI_SLOTS}
+  timeout: ${JOB_TIMEOUT}
+  shutdown_timeout: 5m
+  fetch_interval: 2s
+  report_interval: 1s
+  envs:
+    # Jobs reach this lane's own dockerd (pattern from Forgejo 'Utilizing Docker within Actions').
+    DOCKER_HOST: tcp://dind.docker.internal:2375
+  labels:
+    - "ci:docker://${CI_IMAGE}"                  # pinned ci-base image (Node 24: JS actions run INSIDE the job image; images/ci-base)
+
+cache:
+  enabled: true                                  # built-in cache server: actions/cache hits stay on the LAN
+  dir: /data/cache
+  host: 172.30.10.10                             # runner container IP (job containers run inside dind-ci)
+
+container:
+  network: ""                                    # per-job network: job/service containers are not on a shared network
+  privileged: false
+  options: "--memory=${CI_SLOT_MEM_GB}g --memory-swap=${CI_SLOT_MEM_GB}g --cpus=${CI_SLOT_CPUS} --pids-limit=4096 --add-host=dind.docker.internal:host-gateway"
+  valid_volumes: []                              # no bind mounts from workflows
+  docker_host: "-"                               # no socket mount; runner itself talks to dind via DOCKER_HOST env
+  force_pull: true                               # always re-resolve images; avoids stale/poisoned local tags
+
+server:
+  connections:
+    forge:
+      url: https://${FORGE_DOMAIN}/
+      uuid: ${RUNNER_CI_UUID}                    # printed by `forgejo-cli actions register` (site.env; not a secret)
+      token_url: file:$CREDENTIALS_DIRECTORY/forgejo_runner_ci_token

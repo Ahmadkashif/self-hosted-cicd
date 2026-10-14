@@ -1,0 +1,37 @@
+nftables.service: active, tables: table inet ci_egress 
+certs.d for: git.lab.test mirror.lab.test
+$ docker compose -f compose.yaml -f compose.tls-internal.yaml --env-file ../build/shared-verify/runner-vm.env up -d
+ Network ci-runner_ci  Created
+ Network ci-runner_deploy  Created
+ Volume ci-runner_dind-deploy  Created
+ Volume ci-runner_dind-ci  Created
+ Container ci-runner-dind-ci-1  Created
+ Container ci-runner-dind-deploy-1  Created
+ Container ci-runner-runner-ci-1  Created
+ Container ci-runner-runner-deploy-1  Created
+ Container ci-runner-dind-ci-1  Started
+ Container ci-runner-dind-deploy-1  Started
+ Container ci-runner-runner-deploy-1  Started
+ Container ci-runner-runner-ci-1  Started
+NAME                        IMAGE                                STATUS
+ci-runner-dind-ci-1         docker:29-dind                       Up 15 seconds
+ci-runner-dind-deploy-1     docker:29-dind                       Up 15 seconds
+ci-runner-runner-ci-1       data.forgejo.org/forgejo/runner:13   Up 14 seconds
+ci-runner-runner-deploy-1   data.forgejo.org/forgejo/runner:13   Up 14 seconds
+--- runner-ci log
+Error: cannot ping the docker daemon. is it running? Cannot connect to the Docker daemon at tcp://172.30.10.2:2375. Is the docker daemon running?
+time="2026-10-14T15:48:19Z" level=info msg="Starting runner daemon"
+Error: cannot ping the docker daemon. is it running? Cannot connect to the Docker daemon at tcp://172.30.10.2:2375. Is the docker daemon running?
+time="2026-10-14T15:48:19Z" level=info msg="Starting runner daemon"
+time="2026-10-14T15:48:20Z" level=info msg="runner: runner-ci-shared-verify, with version: v13.2.0, with labels: [ci], ephemeral: false, declared successfully"
+time="2026-10-14T15:48:20Z" level=info msg="[poller] launched"
+--- runner-deploy log
+Error: cannot ping the docker daemon. is it running? Cannot connect to the Docker daemon at tcp://172.30.20.2:2375. Is the docker daemon running?
+time="2026-10-14T15:48:19Z" level=info msg="Starting runner daemon"
+Error: cannot ping the docker daemon. is it running? Cannot connect to the Docker daemon at tcp://172.30.20.2:2375. Is the docker daemon running?
+time="2026-10-14T15:48:19Z" level=info msg="Starting runner daemon"
+time="2026-10-14T15:48:20Z" level=info msg="runner: runner-deploy-shared-verify, with version: v13.2.0, with labels: [deploy], ephemeral: false, declared successfully"
+time="2026-10-14T15:48:20Z" level=info msg="[poller] launched"
+--- dind-ci
+dind server 
+failed to connect to the docker API at unix:///var/run/docker.sock; check if the path is correct and if the daemon is running: dial unix /var/run/docker.sock: connect: no such file or directory

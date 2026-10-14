@@ -1,0 +1,49 @@
+# GitHub hybrid lane — one ephemeral GitHub Actions runner per instance (gh-runner@1, gh-runner@2, ...).
+# `docker run --rm` + Restart=always => every job gets a brand-new container and a fresh registration
+# (EPHEMERAL=true). Jobs' container actions/services run in dind-github (compose profile "github").
+# PRIVATE REPOS ONLY — GitHub: self-hosted runners "should almost never be used for public repositories".
+# Prefer a GitHub App (APP_ID/APP_PRIVATE_KEY) over a PAT; keep /etc/ci-runner/github.env mode 0600.
+#
+# Updated 2026-09-22 (phase 6, see ../phase-6/synthesis.md §4):
+#  - Image tag -ubuntu-noble: the bare "2.337.0" tag of myoung34/github-runner is the Ubuntu 20.04 (focal) build.
+#  - externals: container jobs bind-mount the runner's externals dir (node for JS actions) as /__e, and dockerd
+#    (dind-github) resolves that path in ITS filesystem. So a shared volume seeded from this image is mounted at
+#    /actions-runner/externals in both the runner and dind-github (ARC does the same with dind-externals).
+#  - Version rule: GitHub stops queuing jobs to runners that miss a release by 30 days, and from 2026-09-25 won't
+#    register runners older than 2.329.0 on github.com. Bump the tag (and the seed marker) at least monthly.
+#    Exit code 7 (version deprecated) stops the restart loop.
+#  - Preferred replacement: ../phase-6/templates/gh-jit-runner.sh + gh-jit-runner@.service (official image, JIT
+#    config, no App key inside the runner container).
+# For per-job VMs instead of containers, replace this unit with GARM + the Incus provider.
+[Unit]
+Description=Ephemeral GitHub Actions runner %i (${PROFILE})
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+RestartSec=2
+RestartPreventExitStatus=7
+ExecStartPre=-/usr/bin/docker rm -f gh-runner-%i
+# Seed the shared externals volume once per image version (flock: slots may start together).
+ExecStartPre=/usr/bin/flock /run/gh-runner-seed.lock /usr/bin/docker run --rm --user 0 --network none \
+  -v ci-runner_gh-externals:/dst --entrypoint sh docker.io/myoung34/github-runner:2.337.0-ubuntu-noble \
+  -c 'test -f /dst/.seeded-2.337.0 || { find /dst -mindepth 1 -delete; cp -a /actions-runner/externals/. /dst/; touch /dst/.seeded-2.337.0; }'
+ExecStart=/usr/bin/docker run --rm --name gh-runner-%i \
+  --network ci-runner_github \
+  --memory ${GITHUB_SLOT_MEM_GB}g --cpus ${GITHUB_SLOT_CPUS} --pids-limit 4096 \
+  --security-opt no-new-privileges:true \
+  --env-file /etc/ci-runner/github.env \
+  -e RUNNER_SCOPE=org -e ORG_NAME=${GITHUB_OWNER} \
+  -e RUNNER_NAME_PREFIX=home-${PROFILE}-%i -e LABELS=${GITHUB_RUNNER_LABELS} \
+  -e EPHEMERAL=true -e UNSET_CONFIG_VARS=true -e RUN_AS_ROOT=false -e DISABLE_AUTO_UPDATE=1 \
+  -e ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1 -e ACTIONS_RUNNER_RETURN_VERSION_DEPRECATED_EXIT_CODE=1 \
+  -e DOCKER_HOST=tcp://172.30.30.2:2375 \
+  -e RUNNER_WORKDIR=/_work/slot-%i \
+  -v ci-runner_gh-work:/_work \
+  -v ci-runner_gh-externals:/actions-runner/externals:ro \
+  docker.io/myoung34/github-runner:2.337.0-ubuntu-noble
+ExecStop=/usr/bin/docker stop -t 30 gh-runner-%i
+
+[Install]
+WantedBy=multi-user.target

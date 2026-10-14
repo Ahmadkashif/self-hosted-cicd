@@ -1,0 +1,59 @@
+prek 0.5.5
+$ prek install --hook-type pre-commit --hook-type pre-push
+Installed Git hook at `.git/hooks/pre-commit`
+Installed Git hook at `.git/hooks/pre-push`
+
+=== L1: commit a file with a private key (expect BLOCK)
+check for merge conflicts................................................Passed
+check for added large files..............................................Passed
+fix end of files.........................................................Passed
+trim trailing whitespace.................................................Passed
+detect private key.......................................................Failed
+Detect hardcoded secrets.................................................Failed
+- hook id: gitleaks
+      ░    gitleaks
+commit exit=1 (141s incl. first-run hook install)
+
+=== L1: commit a badly formatted Go file (expect BLOCK)
+gofmt -l (staged Go files)...............................................Failed
+- hook id: gofmt
+  gofmt needed:
+commit exit=1 (0s)
+
+=== L1: clean commit (expect PASS)
+check for merge conflicts................................................Passed
+check for added large files..............................................Passed
+fix end of files.........................................................Passed
+trim trailing whitespace.................................................Passed
+detect private key.......................................................Passed
+Detect hardcoded secrets.................................................Passed
+commit exit=0 (1s)
+
+=== L2: break a unit test, commit with --no-verify (skips L1), then git push (expect BLOCK by task check)
+check for added large files..............................................Passed
+fix end of files.........................................................Passed
+trim trailing whitespace.................................................Passed
+task check (full local gate, L2).........................................Failed
+  --- FAIL: TestUp (0.00s)
+  --- FAIL: TestHello (0.00s)
+  FAIL
+  FAIL	example.com/hello/cmd/hello	0.002s
+push exit=1 (19s)
+remote main still at: 21cbd76 base
+
+=== L2: fix and push (expect PASS)
+check for merge conflicts................................................Passed
+check for added large files..............................................Passed
+check yaml...........................................(no files to check)Skipped
+fix end of files.........................................................Passed
+trim trailing whitespace.................................................Passed
+detect private key.......................................................Passed
+Detect hardcoded secrets.................................................Passed
+Lint GitHub Actions workflow files...................(no files to check)Skipped
+gofmt -l (staged Go files)...............................................Passed
+check for added large files..............................................Passed
+fix end of files.........................................................Passed
+trim trailing whitespace.................................................Passed
+task check (full local gate, L2).........................................Passed
+   21cbd76..d2ee260  main -> main
+push exit=0 (2s)

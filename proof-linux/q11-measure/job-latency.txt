@@ -1,0 +1,7 @@
+--- ci lane (apps/probe egress.yml: checkout + probe)
+task 35: dispatch->runner picked up   1.8s | ->first step running   2.3s | total job  17.4s
+task 36: dispatch->runner picked up   1.6s | ->first step running   2.4s | total job  17.5s
+task 37: dispatch->runner picked up   1.3s | ->first step running   2.3s | total job  17.0s
+--- deploy lane (infra/deploy egress.yml)
+task 38: dispatch->runner picked up   1.6s | ->first step running   2.2s | total job  17.5s
+task 39: dispatch->runner picked up   1.4s | ->first step running   2.8s | total job  18.1s

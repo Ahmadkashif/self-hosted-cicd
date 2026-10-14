@@ -1,0 +1,96 @@
+# L3 (ci) + L4 (release) for the HOME FORGE lane. Thin wrapper: all checks live in Taskfile.yml.
+# Actions are pinned to full SHAs; Forgejo's default action mirror (data.forgejo.org) carries the same SHAs
+# as github.com, so the pins are identical to the GitHub lane.
+name: pipeline
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: false        # never cancel a running release; Forgejo concurrency is "best-effort" per docs
+
+jobs:
+  ci:
+    # Required status check name on Forgejo includes the event: "pipeline / ci (pull_request)".
+    runs-on: ci                                   # CI lane: no secrets ever referenced here
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: ci-only-not-a-secret
+          POSTGRES_DB: app_test
+    env:
+      BASE_REF: origin/${{ github.base_ref || 'main' }}
+      DATABASE_URL: postgres://postgres:ci-only-not-a-secret@postgres:5432/app_test
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Restore pnpm store (LAN cache server built into the runner)
+        # The runner's cache server speaks the v1 protocol. v4.3.0, v5.1.0 and v6.1.0 all hit it (lab 2026-10-14);
+        # never set ACTIONS_CACHE_SERVICE_V2. v5.1.0 = node24 (v4.3.0 declares node20; Forgejo runs it on the
+        # job image's node anyway).
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+      - name: task ci
+        run: task ci BASE_REF="$BASE_REF"
+
+  release:
+    # L4: only for pushes to protected main (branch protection: PR + required "pipeline / ci" check,
+    # no direct pushes, no force-push). Runs on the separate deploy lane (own dockerd, own registration).
+    needs: [ci]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: deploy
+    timeout-minutes: 20
+    env:
+      REGISTRY: ${{ vars.REGISTRY_HOST }}         # e.g. git.home.example
+      IMAGE: ${{ vars.REGISTRY_HOST }}/${{ github.repository }}
+      VERSION: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Registry login (bot user, write:package scope only)
+        env:
+          REGISTRY_USER: ${{ vars.REGISTRY_USER }}
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+        run: printf '%s' "$REGISTRY_TOKEN" | docker login "$REGISTRY" -u "$REGISTRY_USER" --password-stdin
+      - name: Build and push by digest
+        run: |
+          # BuildKit runs in its own container (docker-container driver, needed for attestations): hand it the
+          # private CA baked into deploy-base when the forge uses Caddy `tls internal` (README §4 step 2c).
+          cfg="$(mktemp)"
+          for ca in /usr/local/share/ca-certificates/extra/*.crt; do
+            [ -f "$ca" ] && printf '[registry."%s"]\n  ca = ["%s"]\n' "$REGISTRY" "$ca" > "$cfg"
+          done
+          docker buildx create --use --name release --driver docker-container --buildkitd-config "$cfg"
+          # Kamal refuses an image without the label service=<config/deploy.yml service>
+          service="$(ruby -ryaml -e 'puts YAML.load_file("config/deploy.yml")["service"]')"
+          docker buildx build --pull --push \
+            --provenance=true --sbom=true --label "service=$service" \
+            --metadata-file build-meta.json \
+            -t "$IMAGE:$VERSION" .
+          echo "DIGEST=$(jq -r '."containerimage.digest"' build-meta.json)" >> "$GITHUB_ENV"
+      - name: Deploy with Kamal (health-gated swap; old version keeps serving on failure)
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}       # only if config/deploy.yml lists it under env.secret
+        run: |
+          eval "$(ssh-agent -s)"
+          printf '%s\n' "$DEPLOY_SSH_KEY" | ssh-add -
+          mkdir -p ~/.ssh && cp config/known_hosts ~/.ssh/known_hosts   # pinned host keys, committed
+          kamal deploy --skip-push --version="$VERSION"
+      - name: Cleanup
+        if: always()
+        run: |
+          docker buildx rm release 2>/dev/null || true
+          docker logout "$REGISTRY" || true

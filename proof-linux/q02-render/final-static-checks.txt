@@ -1,0 +1,83 @@
+=== render all profiles (example site; shared-verify also with --host)
+  host RAM needed (OS+forge+db+mirror+edge+VM+apps+CD)         13.25 /   16.00
+rendered 8 files -> <scratchpad>/tmp.gBBj5zlDLa/small; syntax errors: 0
+  host RAM needed (OS+forge+db+mirror+edge+VM+apps+CD)         27.50 /   32.00
+rendered 8 files -> <scratchpad>/tmp.B9Ki1neoYE/medium; syntax errors: 0
+  host RAM needed (OS+forge+db+mirror+edge+VM+apps+CD)         54.00 /   64.00
+rendered 8 files -> <scratchpad>/tmp.fbygwD2AfT/large; syntax errors: 0
+  host RAM needed (forge VM + runner VM + target VM + apps)    10.25 /   12.00
+rendered 8 files -> <scratchpad>/tmp.UNxsMjeUJt/shared-verify; syntax errors: 0
+    vs. RAM available now (detect-host: total - co-tenants)    10.25 /   18.80
+rendered 8 files -> <scratchpad>/tmp.yUo0xUH13D/shared-verify; syntax errors: 0
+
+=== actionlint 1.7.12
+OK phase-5/repo-template (2 files)
+OK phase-5/deploy-repo-template (1 files)
+OK app/hello (2 files)
+OK app/deploy (2 files)
+OK app/probe (3 files)
+mac-source/phase-6/templates/workflows/hardened-ci.yml:69:7: unexpected key "queue" for "concurrency" section. expected one of "cancel-in-progress", "group" [syntax-check]
+   |
+69 |       queue: max                   # queue deploys instead of cancelling (not with cancel-in-progress) [S136]
+   |       ^~~~~~
+
+=== shellcheck v0.11.0 (short-lived --rm --network none container)
+
+In lab/vmlab/vmlab.sh line 83:
+  for i in $(seq 1 90); do ssh $SSHO ubuntu@$(ipof $n) true 2>/dev/null && break; sleep 2; done
+                                            ^--------^ SC2046 (warning): Quote this to prevent word splitting.
+
+
+In lab/vmlab/vmlab.sh line 84:
+  ssh $SSHO ubuntu@$(ipof $n) 'cloud-init status --wait >/dev/null 2>&1; echo "$(hostname) up: $(. /etc/os-release; echo $PRETTY_NAME) kernel $(uname -r)"';;
+                   ^--------^ SC2046 (warning): Quote this to prevent word splitting.
+
+
+In lab/vmlab/vmlab.sh line 87:
+  for i in $(seq 1 60); do kill -0 "$(cat $d/pid 2>/dev/null)" 2>/dev/null || break; sleep 1; done
+  ^-^ SC2034 (warning): i appears unused. Verify use (or export if used externally).
+
+
+In lab/vmlab/vmlab.sh line 89:
+ssh) n=$2; shift 2; exec ssh $SSHO ubuntu@$(ipof $n) "$@";;
+                                          ^--------^ SC2046 (warning): Quote this to prevent word splitting.
+
+
+In lab/vmlab/vmlab.sh line 90:
+scp-to) exec scp -r $SSHO "$3" ubuntu@$(ipof $2):"$4";;
+                                      ^--------^ SC2046 (warning): Quote this to prevent word splitting.
+
+
+In lab/vmlab/vmlab.sh line 91:
+scp-from) exec scp -r $SSHO ubuntu@$(ipof $2):"$3" "$4";;
+                                   ^--------^ SC2046 (warning): Quote this to prevent word splitting.
+
+
+In lab/scripts/latency.sh line 4:
+for i in $(seq 1 $3); do
+^-^ SC2034 (warning): i appears unused. Verify use (or export if used externally).
+
+
+In lab/scripts/promote.sh line 9:
+bash ~/scripts/joblog.sh infra/deploy "$(echo "$t" | cut -f1)" > ~/promote-$(echo "$t" | cut -f1).log
+                                                                           ^--------------------^ SC2046 (warning): Quote this to prevent word splitting.
+
+
+In lab/scripts/promote.sh line 10:
+grep -E "not in apps.allow|CI '|bad sha|pushed |kamal-proxy deploy|Finished all|ERROR|🏁" ~/promote-$(echo "$t" | cut -f1).log | cut -c30-220
+                                                                                                   ^--------------------^ SC2046 (warning): Quote this to prevent word splitting.
+
+
+In lab/scripts/wait.sh line 3:
+for i in $(seq 1 $(( ${2:-900} / 10 ))); do
+^-^ SC2034 (warning): i appears unused. Verify use (or export if used externally).
+
+
+In app/probe/probe.sh line 7:
+  local out; out=$(timeout 5 bash -c "exec 3<>/dev/tcp/$1/$2" 2>&1); local rc=$?
+             ^-^ SC2034 (warning): out appears unused. Verify use (or export if used externally).
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2034 -- i appears unused. Verify use (or ...
+  https://www.shellcheck.net/wiki/SC2046 -- Quote this to prevent word splitt...
+bash -n phase-6 scripts: done

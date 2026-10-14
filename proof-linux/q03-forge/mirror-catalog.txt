@@ -1,0 +1,2 @@
+=== Docker Hub mirror catalog (what dind pulled through mirror.lab.test)
+{"repositories":["library/golang","library/postgres","moby/buildkit"]}

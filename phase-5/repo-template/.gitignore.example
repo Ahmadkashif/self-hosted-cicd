@@ -1,0 +1,5 @@
+# add to the app repo's .gitignore
+.kamal/secrets*
+!.kamal/secrets.example
+sbom.spdx.json
+build-meta.json

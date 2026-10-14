@@ -1,0 +1,11 @@
+lab/state/
+phase-5/build/
+phase-5/site.env
+phase-5/host.env
+phase-5/forge-host/data/
+phase-5/forge-host/secrets/
+phase-5/runner-vm/data/
+phase-5/runner-vm/secrets/
+phase-5/runner-vm/ca/
+phase-5/images/*/ca/
+phase-5/images/*/meta.json

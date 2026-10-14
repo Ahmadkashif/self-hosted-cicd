@@ -1,0 +1,11 @@
+$ POST /repos/apps/hello/branch_protections
+{"rule_name":"main","enable_push":false,"enable_force_push":null,"enable_status_check":true,"status_check_contexts":["pipeline / ci (pull_request)"],"apply_to_admins":true}
+--- direct push to main (as admin/dev)
+remote: Forgejo: Not allowed to push to protected branch main        
+ ! [remote rejected] main -> main (pre-receive hook declined)
+error: failed to push some refs to 'git.lab.test:apps/hello.git'
+--- force push to main
+remote: Forgejo: branch main is protected from force push        
+ ! [remote rejected] main -> main (pre-receive hook declined)
+error: failed to push some refs to 'git.lab.test:apps/hello.git'
+9463bcd ci: point actionlint at its config explicitly (.forgejo workflows)

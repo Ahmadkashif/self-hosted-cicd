@@ -1,0 +1,22 @@
+$ (profile small, no COMPOSE_PROFILES) docker compose up -d --wait
+ Container ci-forge-s-registry-mirror-1  Creating
+ Container ci-forge-s-registry-mirror-1  Created
+ Container ci-forge-s-registry-mirror-1  Starting
+ Container ci-forge-s-forgejo-1  Started
+ Container ci-forge-s-caddy-1  Started
+ Container ci-forge-s-registry-mirror-1  Started
+ Container ci-forge-s-registry-mirror-1  Waiting
+ Container ci-forge-s-caddy-1  Healthy
+ Container ci-forge-s-registry-mirror-1  Healthy
+ Container ci-forge-s-forgejo-1  Healthy
+took 32s
+ci-forge-s-caddy-1 Up 31 seconds
+ci-forge-s-forgejo-1 Up 31 seconds (healthy)
+ci-forge-s-registry-mirror-1 Up 31 seconds
+PATH = /var/lib/gitea/data/gitea.db
+DB_TYPE = sqlite3
+PATH = /var/lib/gitea/data/attachments
+PATH = /var/lib/gitea/git/lfs
+ls: /var/lib/gitea/data/forgejo.db: No such file or directory
+ci-forge-s-forgejo-1 98.65MiB / 768MiB
+ Network ci-forge-s_forge  Removed

@@ -1,0 +1,84 @@
+# HARDENED CD ("deploy-repo pattern") for the Forgejo lane.
+# Why: Forgejo has no environment-scoped secrets, so any workflow on a same-repo branch can reference an app
+# repo's secrets and ask for `runs-on: deploy` (demonstrated in the 2026-10-14 lab: proof-linux/q09-cd-tier2/).
+# Here APP repos hold ZERO secrets; this separate `infra/deploy` repo holds them, only YOU can push to it, and the
+# deploy runner is registered to THIS repo only. Promotion = workflow_dispatch (UI or API) with app + SHA.
+name: promote
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "App repo on this forge (owner/name) — must be listed in apps.allow"
+        required: true
+      sha:
+        description: "40-char commit SHA on the app's main that passed CI"
+        required: true
+
+concurrency:
+  group: promote-${{ inputs.app }}
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: deploy
+    timeout-minutes: 25
+    env:
+      APP: ${{ inputs.app }}                      # passed via env, never interpolated into shell (injection-safe)
+      SHA: ${{ inputs.sha }}
+      FORGE: ${{ github.server_url }}
+      REGISTRY: ${{ vars.REGISTRY_HOST }}
+      # the app's CI status context that must be green. Forgejo appends the event: "<workflow> / <job> (<event>)".
+      # Not the COMBINED state: other contexts (e.g. a pending release job) would block or wrongly pass it.
+      CI_CONTEXT: ${{ vars.CI_CONTEXT || 'pipeline / ci (push)' }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0  (this deploy repo)
+        with:
+          persist-credentials: false
+      - name: Validate inputs
+        run: |
+          printf '%s' "$SHA" | grep -Eq '^[0-9a-f]{40}$' || { echo "bad sha"; exit 1; }
+          grep -Fxq "$APP" apps.allow || { echo "app '$APP' is not in apps.allow"; exit 1; }
+      - name: Require green CI on that exact commit
+        env:
+          APP_READ_TOKEN: ${{ secrets.APP_READ_TOKEN }}     # bot PAT: read:repository only
+        run: |
+          state=$(curl -fsS -H "Authorization: token $APP_READ_TOKEN" \
+            "$FORGE/api/v1/repos/$APP/commits/$SHA/statuses?limit=50" |
+            jq -r --arg c "$CI_CONTEXT" '[.[] | select(.context == $c)] | sort_by(.id) | last | .status // "missing"')
+          [ "$state" = "success" ] || { echo "CI '$CI_CONTEXT' for $SHA is '$state'"; exit 1; }
+          echo "CI '$CI_CONTEXT' for $SHA is success"
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0  (the app, at the promoted SHA)
+        with:
+          repository: ${{ inputs.app }}
+          ref: ${{ inputs.sha }}
+          token: ${{ secrets.APP_READ_TOKEN }}
+          path: app
+          persist-credentials: false
+      - name: Build, push by digest, deploy
+        working-directory: app
+        env:
+          REGISTRY_USER: ${{ vars.REGISTRY_USER }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          printf '%s' "$KAMAL_REGISTRY_PASSWORD" | docker login "$REGISTRY" -u "$REGISTRY_USER" --password-stdin
+          service="$(ruby -ryaml -e 'puts YAML.load_file("config/deploy.yml")["service"]')"
+          image="$REGISTRY/$(ruby -ryaml -e 'puts YAML.load_file("config/deploy.yml")["image"]')"
+          # BuildKit runs in its own container: hand it a private CA if the deploy image carries one (tls internal)
+          cfg="$(mktemp)"
+          for ca in /usr/local/share/ca-certificates/extra/*.crt; do
+            [ -f "$ca" ] && printf '[registry."%s"]\n  ca = ["%s"]\n' "$REGISTRY" "$ca" > "$cfg"
+          done
+          docker buildx create --use --name promote --driver docker-container --buildkitd-config "$cfg"
+          docker buildx build --pull --push --provenance=true --sbom=true --label "service=$service" \
+            --build-arg VERSION="$SHA" --metadata-file ../build-meta.json -t "$image:$SHA" .
+          echo "pushed $image:$SHA@$(jq -r '."containerimage.digest"' ../build-meta.json)"
+          eval "$(ssh-agent -s)"; printf '%s\n' "$DEPLOY_SSH_KEY" | ssh-add -
+          mkdir -p ~/.ssh && cp ../known_hosts ~/.ssh/known_hosts
+          kamal deploy --skip-push --version="$SHA"   # health-gated; old version keeps serving on failure
+      - name: Cleanup
+        if: always()
+        run: |
+          docker buildx rm promote 2>/dev/null || true
+          docker logout "$REGISTRY" || true

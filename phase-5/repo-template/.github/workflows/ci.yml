@@ -1,0 +1,73 @@
+# L3 + L4 for the GITHUB HYBRID lane (repos that must stay on GitHub). Same Taskfile contract, same pins.
+# Runs on ephemeral self-hosted runners in the home runner VM (runner-vm/systemd/gh-runner@.service).
+# PRIVATE REPOSITORIES ONLY. Org policy: require SHA-pinned actions.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  ci:
+    runs-on: [self-hosted, linux, x64, home]
+    container:
+      image: ghcr.io/your-org/ci-base:2026.09@sha256:REPLACE_WITH_DIGEST   # same ci-base as the Forgejo lane
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: ci-only-not-a-secret
+          POSTGRES_DB: app_test
+    env:
+      BASE_REF: origin/${{ github.base_ref || 'main' }}
+      DATABASE_URL: postgres://postgres:ci-only-not-a-secret@postgres:5432/app_test
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      # v6.1.0 (node24). v4.3.0 ran on node20, which is removed from runners on 2026-09-23. The Forgejo lane keeps
+      # v4.3.0 until newer versions are verified against Forgejo's cache server.
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0 (GitHub's cache service; crosses your WAN)
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: task ci BASE_REF="$BASE_REF"
+
+  release:
+    needs: [ci]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, linux, x64, home]
+    # GitHub advantage over Forgejo: environment-scoped secrets + deployment branch rule "main" (private repos:
+    # GitHub Pro/Team; Free private repos have no environments; required reviewers/wait timers on private repos
+    # need Enterprise). Deploy secrets live ONLY in this environment.
+    # Better: give release its own lane/dockerd (phase-6 compose.github-lane.yaml: runs-on [..., gh-deploy]).
+    environment: production
+    permissions:
+      contents: read
+      packages: write
+      id-token: write        # OIDC for registries/clouds that support it instead of static keys
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Build, push by digest, deploy
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_TOKEN }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          VERSION: ${{ github.sha }}
+        run: |
+          eval "$(ssh-agent -s)"
+          printf '%s\n' "$DEPLOY_SSH_KEY" | ssh-add -
+          mkdir -p ~/.ssh && cp config/known_hosts ~/.ssh/known_hosts
+          kamal deploy --version="$VERSION"      # Kamal builds + pushes + deploys

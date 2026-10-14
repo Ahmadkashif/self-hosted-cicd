@@ -1,0 +1,17 @@
+# per-job limits from runner-ci.yaml (container.options), cache URL, and valid_volumes: [] (bind mounts refused)
+name: limits
+on: [workflow_dispatch]
+jobs:
+  limits:
+    runs-on: ci
+    steps:
+      - run: |
+          echo "memory.max=$(cat /sys/fs/cgroup/memory.max) memory.swap.max=$(cat /sys/fs/cgroup/memory.swap.max 2>/dev/null) cpu.max=$(cat /sys/fs/cgroup/cpu.max) pids.max=$(cat /sys/fs/cgroup/pids.max)"
+          echo "ACTIONS_CACHE_URL set: ${ACTIONS_CACHE_URL:+yes}"
+  bind-mount:
+    runs-on: ci
+    container:
+      image: git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb
+      volumes: ["/:/host"]
+    steps:
+      - run: ls /host | head -3 || echo "no /host mount"

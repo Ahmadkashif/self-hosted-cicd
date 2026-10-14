@@ -1,0 +1,82 @@
+$ docker login git.lab.test -u ci-bot (PAT scope write:package)
+
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/go/credential-store/
+
+Login Succeeded
+#15 [stage-2 7/9] COPY ca/ /usr/local/share/ca-certificates/extra/
+#15 DONE 0.1s
+
+#16 [stage-2 8/9] RUN update-ca-certificates
+#16 0.180 Updating certificates in /etc/ssl/certs...
+#16 3.149 rehash: warning: skipping ca-certificates.crt,it does not contain exactly one certificate or CRL
+#16 3.157 1 added, 0 removed; done.
+#16 3.157 Running hooks in /etc/ca-certificates/update.d...
+#16 3.158 done.
+#16 DONE 3.2s
+
+#17 [stage-2 9/9] RUN node --version && go version && task --version && gitleaks version && actionlint --version | head -1 && docker --version
+#17 0.154 v24.21.0
+#17 0.158 go version go1.27.2 linux/amd64
+#17 0.205 3.54.0
+#17 0.903 8.30.1
+#17 0.908 1.7.12
+#17 0.918 Docker version 29.9.0, build f415da8
+#17 DONE 0.9s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 18.8s done
+#18 exporting manifest sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb 0.0s done
+#18 exporting config sha256:965a386a61fb571f3db2df08268fd8e103cdac3301d7b2644d4ba3cb914c936d 0.0s done
+#18 naming to git.lab.test/infra/ci-base:lab done
+#18 unpacking to git.lab.test/infra/ci-base:lab
+#18 unpacking to git.lab.test/infra/ci-base:lab 4.0s done
+#18 pushing layers 0.0s done
+#18 ERROR: failed to push git.lab.test/infra/ci-base:lab: failed to authorize: failed to fetch oauth token: Post "https://git.lab.test/v2/token": tls: failed to verify certificate: x509: certificate signed by unknown authority
+
+#19 [auth] *:: infra/ci-base:pull,push token for git.lab.test
+#19 DONE 0.0s
+
+#20 [auth] *:: infra/ci-base:pull,push token for git.lab.test
+#20 DONE 0.0s
+------
+ > exporting to image:
+------
+ERROR: failed to build: failed to solve: failed to fetch oauth token: Post "https://git.lab.test/v2/token": tls: failed to verify certificate: x509: certificate signed by unknown authority
+#15 CACHED
+
+#16 [stage-2 6/9] RUN set -e; cd /tmp;     curl -fsSLO "https://github.com/go-task/task/releases/download/v3.54.0/task_linux_amd64.tar.gz";     curl -fsSL "https://github.com/go-task/task/releases/download/v3.54.0/task_checksums.txt" | grep ' task_linux_amd64.tar.gz$' | sha256sum -c -;     tar -xzf task_linux_amd64.tar.gz -C /usr/local/bin task;     f="gitleaks_8.30.1_linux_x64.tar.gz"; curl -fsSLO "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/$f";     curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_checksums.txt" | grep " $f$" | sha256sum -c -;     tar -xzf "$f" -C /usr/local/bin gitleaks;     f="actionlint_1.7.12_linux_amd64.tar.gz"; curl -fsSLO "https://github.com/rhysd/actionlint/releases/download/v1.7.12/$f";     curl -fsSL "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_checksums.txt" | grep " $f$" | sha256sum -c -;     tar -xzf "$f" -C /usr/local/bin actionlint; rm -f /tmp/*.tar.gz
+#16 CACHED
+
+#17 [stage-2 9/9] RUN node --version && go version && task --version && gitleaks version && actionlint --version | head -1 && docker --version
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 exporting manifest sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb done
+#18 exporting config sha256:965a386a61fb571f3db2df08268fd8e103cdac3301d7b2644d4ba3cb914c936d done
+#18 naming to git.lab.test/infra/ci-base:lab done
+#18 unpacking to git.lab.test/infra/ci-base:lab done
+#18 DONE 0.0s
+The push refers to repository [git.lab.test/infra/ci-base]
+40beab246f4d: Waiting
+2144d4dd6282: Waiting
+2accf8479e6b: Waiting
+7fd1ebe418b5: Waiting
+1a0cf4b1ffc8: Waiting
+234aac868442: Waiting
+c430c2ac004d: Waiting
+668e891f1833: Waiting
+517d640e3283: Waiting
+11ffcabe0f77: Waiting
+08489011619d: Waiting
+2f9fecca34b0: Waiting
+f642213542f4: Waiting
+failed to authorize: failed to fetch oauth token: Post "https://git.lab.test/v2/token": tls: failed to verify certificate: x509: certificate signed by unknown authority
+storage driver=overlayfs containerd-snapshotter=[[driver-type io.containerd.snapshotter.v1]]
+rehash: warning: skipping ca-certificates.crt,it does not contain exactly one certificate or CRL
+ Container ci-forge-postgres-1  Healthy
+build+push took 80s
+CI_IMAGE=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb
+DEPLOY_IMAGE=git.lab.test/infra/deploy-base:lab@sha256:45e0ca7a6b398e2cb6bd142eb8e91abe5d3b80187ed4952fe7bb03ece1281492

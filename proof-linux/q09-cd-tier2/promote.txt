@@ -1,0 +1,27 @@
+--- apps/hello main 839d8ddbe5a30f9e9e3a2d3a82823633f8358e8b statuses (deploy runner now scoped to infra/deploy only):
+{"combined":"pending","statuses":["pipeline / ci (push)=success","pipeline / release (push)=pending"]}
+
+=== (a) app not in apps.allow
+dispatch promote app=apps/probe sha=95ba7c7097 -> HTTP 204
+31	1	promote	workflow_dispatch	main	4e27826ee5	failure
+app 'apps/probe' is not in apps.allow
+ERROR: failed to remove one or more builders
+🏁  Job failed
+
+=== (b) SHA whose CI is red (PR #1 first commit)
+dispatch promote app=apps/hello sha=e356d750ff -> HTTP 204
+32	2	promote	workflow_dispatch	main	4e27826ee5	failure
+CI 'pipeline / ci (push)' for e356d750ff25a7642ca5db5fdb7d0fb689060eaa is 'missing'
+ERROR: failed to remove one or more builders
+🏁  Job failed
+
+=== (c) green main SHA
+dispatch promote app=apps/hello sha=839d8ddbe5 -> HTTP 204
+33	3	promote	workflow_dispatch	main	4e27826ee5	success
+CI 'pipeline / ci (push)' for 839d8ddbe5a30f9e9e3a2d3a82823633f8358e8b is success
+pushed git.lab.test/apps/hello:839d8ddbe5a30f9e9e3a2d3a82823633f8358e8b@sha256:d4a54ce30a48951a4dd3921e04e6dce699e32b053f6e2a0328afc3a2868243dd
+  INFO [da953c42] Running docker exec kamal-proxy kamal-proxy deploy hello-web --target="02d0b4eb1c70:3000" --host="app.lab.test" --deploy-timeout="20s" --drain-timeout="30s" --health-check-i
+  Finished all in 6.8 seconds
+🏁  Job succeeded
+/ -> hello from 839d8ddbe5a30f9e9e3a2d3a82823633f8358e8b
+/up -> ok

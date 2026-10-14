@@ -1,0 +1,231 @@
+2026-10-14T16:11:34.3234549Z Runner 00000000-0000-0000-0000-00000000c1c1 (version:v13.2.0) received task 7 of job ci, triggered by event: pull_request
+2026-10-14T16:11:34.3278511Z workflow prepared
+2026-10-14T16:11:34.3430288Z 🚀  Start image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb
+2026-10-14T16:11:34.4603363Z   🐳  docker pull image=postgres:17 platform=linux/amd64 username= forcePull=true
+2026-10-14T16:11:38.1439286Z Cleaning up services for job ci
+2026-10-14T16:11:38.1451438Z Cleaning up network for job ci, and network name is: WORKFLOW-e35e795d5fb073b76c9589dc80568457
+2026-10-14T16:11:38.3828685Z   🐳  docker create image=postgres:17 platform=linux/amd64 entrypoint=[] cmd=[] network="WORKFLOW-e35e795d5fb073b76c9589dc80568457"
+2026-10-14T16:11:38.5138947Z   🐳  docker run image=postgres:17 platform=linux/amd64 entrypoint=[] cmd=[] network="WORKFLOW-e35e795d5fb073b76c9589dc80568457"
+2026-10-14T16:11:39.3146383Z   🐳  docker create image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-e35e795d5fb073b76c9589dc80568457"
+2026-10-14T16:11:39.4541196Z   🐳  docker run image=git.lab.test/infra/ci-base:lab@sha256:1139147af9d5686dad4bedeeda57071accd17ea7a7bc3f54d847a0e68e46cffb platform=linux/amd64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="WORKFLOW-e35e795d5fb073b76c9589dc80568457"
+2026-10-14T16:11:40.3498926Z   ☁️  git fetch 'https://data.forgejo.org/actions/checkout' skipped; ref=d23441a48e516b6c34aea4fa41551a30e30af803 cached
+2026-10-14T16:11:40.4129065Z   ☁️  git fetch 'https://data.forgejo.org/actions/cache' skipped; ref=caa296126883cff596d87d8935842f9db880ef25 cached
+2026-10-14T16:11:40.5348506Z ⭐ Run Main actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T16:11:40.5372576Z   🐳  docker cp src=/data/.cache/act/5c/53910f384ee5a8eb91dfcd74705b97a41dcf11b66c710c51433ba873b865ae/ dst=/var/run/act/actions/5c/53910f384ee5a8eb91dfcd74705b97a41dcf11b66c710c51433ba873b865ae/
+2026-10-14T16:11:40.5662008Z   🐳  docker exec cmd=[node /var/run/act/actions/5c/53910f384ee5a8eb91dfcd74705b97a41dcf11b66c710c51433ba873b865ae/dist/index.js] user= workdir=
+2026-10-14T16:11:40.6683203Z   ❓ add-matcher /run/act/actions/5c/53910f384ee5a8eb91dfcd74705b97a41dcf11b66c710c51433ba873b865ae/dist/problem-matcher.json
+2026-10-14T16:11:40.6683336Z ::add-matcher::/run/act/actions/5c/53910f384ee5a8eb91dfcd74705b97a41dcf11b66c710c51433ba873b865ae/dist/problem-matcher.json
+2026-10-14T16:11:40.6686648Z Syncing repository: apps/hello
+2026-10-14T16:11:40.6690420Z ##[group]Getting Git version info
+2026-10-14T16:11:40.6692008Z Working directory is '/workspace/apps/hello'
+2026-10-14T16:11:40.6719676Z [command]/usr/bin/git version
+2026-10-14T16:11:40.6781529Z git version 2.39.5
+2026-10-14T16:11:40.6799049Z ##[endgroup]
+2026-10-14T16:11:40.6811143Z Temporarily overriding HOME='/tmp/e98b07a3-b93d-473e-8360-decaf211ba48' before making global git config changes
+2026-10-14T16:11:40.6811436Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T16:11:40.6815099Z [command]/usr/bin/git config --global --add safe.directory /workspace/apps/hello
+2026-10-14T16:11:40.6838778Z Deleting the contents of '/workspace/apps/hello'
+2026-10-14T16:11:40.6842533Z ##[group]Determining repository object format
+2026-10-14T16:11:40.6844337Z ##[endgroup]
+2026-10-14T16:11:40.6844530Z ##[group]Initializing the repository
+2026-10-14T16:11:40.6848070Z [command]/usr/bin/git init /workspace/apps/hello
+2026-10-14T16:11:40.6873276Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-14T16:11:40.6873444Z hint: is subject to change. To configure the initial branch name to use in all
+2026-10-14T16:11:40.6873552Z hint: of your new repositories, which will suppress this warning, call:
+2026-10-14T16:11:40.6873653Z hint: 
+2026-10-14T16:11:40.6873734Z hint: 	git config --global init.defaultBranch <name>
+2026-10-14T16:11:40.6873813Z hint: 
+2026-10-14T16:11:40.6873905Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-14T16:11:40.6873996Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-14T16:11:40.6874062Z hint: 
+2026-10-14T16:11:40.6874107Z hint: 	git branch -m <name>
+2026-10-14T16:11:40.6875468Z Initialized empty Git repository in /workspace/apps/hello/.git/
+2026-10-14T16:11:40.6882185Z [command]/usr/bin/git remote add origin https://git.lab.test/apps/hello
+2026-10-14T16:11:40.6906855Z ##[endgroup]
+2026-10-14T16:11:40.6907069Z ##[group]Disabling automatic garbage collection
+2026-10-14T16:11:40.6910206Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-14T16:11:40.6932932Z ##[endgroup]
+2026-10-14T16:11:40.6933072Z ##[group]Setting up auth
+2026-10-14T16:11:40.6933242Z Removing SSH command configuration
+2026-10-14T16:11:40.6937438Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T16:11:40.6961463Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T16:11:40.7128617Z Removing HTTP extra header
+2026-10-14T16:11:40.7132594Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T16:11:40.7154949Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T16:11:40.7385366Z Removing includeIf entries pointing to credentials config files
+2026-10-14T16:11:40.7390571Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T16:11:40.7418042Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T16:11:40.7655566Z [command]/usr/bin/git config --file /tmp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config http.https://git.lab.test/.extraheader AUTHORIZATION: basic ***
+2026-10-14T16:11:40.7693885Z [command]/usr/bin/git config --local includeIf.gitdir:/workspace/apps/hello/.git.path /tmp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:40.7728588Z [command]/usr/bin/git config --local includeIf.gitdir:/workspace/apps/hello/.git/worktrees/*.path /tmp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:40.7764471Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:40.7785251Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:40.7804610Z ##[endgroup]
+2026-10-14T16:11:40.7804757Z ##[group]Fetching the repository
+2026-10-14T16:11:40.7811837Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +c7880cfcce33253025820a0549ee4b741e9d5da2:refs/remotes/pull/1/head
+2026-10-14T16:11:41.0192190Z From https://git.lab.test/apps/hello
+2026-10-14T16:11:41.0193326Z  * [new branch]      feature/version                          -> origin/feature/version
+2026-10-14T16:11:41.0193722Z  * [new branch]      main                                     -> origin/main
+2026-10-14T16:11:41.0194016Z  * [new ref]         c7880cfcce33253025820a0549ee4b741e9d5da2 -> pull/1/head
+2026-10-14T16:11:41.0290652Z ##[endgroup]
+2026-10-14T16:11:41.0291525Z ##[group]Determining the checkout info
+2026-10-14T16:11:41.0296658Z ##[endgroup]
+2026-10-14T16:11:41.0320231Z [command]/usr/bin/git sparse-checkout disable
+2026-10-14T16:11:41.0486405Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-14T16:11:41.0615318Z ##[group]Checking out the ref
+2026-10-14T16:11:41.0635982Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/head
+2026-10-14T16:11:41.0873239Z Note: switching to 'refs/remotes/pull/1/head'.
+2026-10-14T16:11:41.0874114Z 
+2026-10-14T16:11:41.0874420Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-14T16:11:41.0874917Z changes and commit them, and you can discard any commits you make in this
+2026-10-14T16:11:41.0875177Z state without impacting any branches by switching back to a branch.
+2026-10-14T16:11:41.0875428Z 
+2026-10-14T16:11:41.0875654Z If you want to create a new branch to retain commits you create, you may
+2026-10-14T16:11:41.0875919Z do so (now or later) by using -c with the switch command. Example:
+2026-10-14T16:11:41.0876218Z 
+2026-10-14T16:11:41.0876452Z   git switch -c <new-branch-name>
+2026-10-14T16:11:41.0876682Z 
+2026-10-14T16:11:41.0876910Z Or undo this operation with:
+2026-10-14T16:11:41.0877708Z 
+2026-10-14T16:11:41.0877989Z   git switch -
+2026-10-14T16:11:41.0878304Z 
+2026-10-14T16:11:41.0878762Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-14T16:11:41.0879217Z 
+2026-10-14T16:11:41.0880193Z HEAD is now at c7880cf version: set Content-Type application/json
+2026-10-14T16:11:41.0895255Z ##[endgroup]
+2026-10-14T16:11:41.1070914Z [command]/usr/bin/git log -1 --format=%H
+2026-10-14T16:11:41.1184425Z c7880cfcce33253025820a0549ee4b741e9d5da2
+2026-10-14T16:11:41.1372561Z ##[group]Removing auth
+2026-10-14T16:11:41.1372984Z Removing SSH command configuration
+2026-10-14T16:11:41.1378781Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T16:11:41.1526817Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T16:11:41.2050484Z Removing HTTP extra header
+2026-10-14T16:11:41.2053437Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T16:11:41.2077700Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T16:11:41.2251274Z Removing includeIf entries pointing to credentials config files
+2026-10-14T16:11:41.2254048Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T16:11:41.2270351Z includeif.gitdir:/workspace/apps/hello/.git.path
+2026-10-14T16:11:41.2270587Z includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path
+2026-10-14T16:11:41.2270667Z includeif.gitdir:/github/workspace/.git.path
+2026-10-14T16:11:41.2270719Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-14T16:11:41.2276604Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/workspace/apps/hello/.git.path
+2026-10-14T16:11:41.2291123Z /tmp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:41.2298356Z [command]/usr/bin/git config --local --unset includeif.gitdir:/workspace/apps/hello/.git.path /tmp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:41.2322605Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path
+2026-10-14T16:11:41.2337950Z /tmp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:41.2343961Z [command]/usr/bin/git config --local --unset includeif.gitdir:/workspace/apps/hello/.git/worktrees/*.path /tmp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:41.2367463Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-14T16:11:41.2384052Z /github/runner_temp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:41.2390813Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:41.2416553Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-14T16:11:41.2433865Z /github/runner_temp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:41.2440496Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config
+2026-10-14T16:11:41.2466154Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T16:11:41.2700564Z Removing credentials config '/tmp/git-credentials-708eaba2-7875-4d01-8e6f-67a3c65bb984.config'
+2026-10-14T16:11:41.2710458Z ##[endgroup]
+2026-10-14T16:11:41.2713815Z ::remove-matcher owner=checkout-git::
+2026-10-14T16:11:41.9548577Z Cache Size: ~50 MB (52526868 B)
+2026-10-14T16:11:41.9581418Z [command]/usr/bin/tar -xf /tmp/6bf52d68-1062-4921-96a4-64a9d1473b47/cache.tzst -P -C /workspace/apps/hello --use-compress-program unzstd
+2026-10-14T16:11:42.7975491Z Cache restored successfully
+2026-10-14T16:11:42.8091784Z Cache restored from key: go-b56cbce38208008fffd6f6a3a9fd3a30f7fa773760ef68acb486b0c4c285b50c
+2026-10-14T16:11:43.1123564Z [32mtask: [check:fast] out="$(gofmt -l .)"; [ -z "$out" ] || { echo "gofmt needed:"; echo "$out"; exit 1; }
+2026-10-14T16:11:43.1441809Z [0m[32mtask: [check:fast] go vet ./...
+2026-10-14T16:11:43.6697458Z [0m[32mtask: [check:fast] go test -short -count=1 ./...
+2026-10-14T16:11:44.8784945Z [0mok  	example.com/hello/cmd/hello	0.003s
+2026-10-14T16:11:44.8785317Z ?   	example.com/hello/internal/store	[no test files]
+2026-10-14T16:11:44.8900310Z [32mtask: [secrets] if git rev-parse -q --verify "origin/main" >/dev/null; then gitleaks git --redact --no-banner --log-opts="origin/main..HEAD" .; else gitleaks git --redact --no-banner .; fi
+2026-10-14T16:11:45.7446744Z [0m[90m4:11PM[0m [32mINF[0m [1mUnknown SCM platform. Use --platform to include links in findings.[0m [36mhost=[0mgit.lab.test
+2026-10-14T16:11:45.7455562Z [90m4:11PM[0m [32mINF[0m [1m2 commits scanned.[0m
+2026-10-14T16:11:45.7455759Z [90m4:11PM[0m [32mINF[0m [1mscanned ~531 bytes (531 bytes) in 379ms[0m
+2026-10-14T16:11:45.7455835Z [90m4:11PM[0m [32mINF[0m [1mno leaks found[0m
+2026-10-14T16:11:45.7489359Z [32mtask: [workflows] actionlint -config-file .github/actionlint.yaml .forgejo/workflows/*.yml
+2026-10-14T16:11:45.7538229Z [0m[32mtask: [test:integration] go test -tags integration -count=1 ./...
+2026-10-14T16:11:46.8523831Z [0mok  	example.com/hello/cmd/hello	0.011s
+2026-10-14T16:11:47.0548894Z ok  	example.com/hello/internal/store	0.069s
+2026-10-14T16:11:47.0961518Z [32mtask: [image] docker buildx build --pull --load --build-arg VERSION=c7880cfcce33253025820a0549ee4b741e9d5da2 -t hello:ci .
+2026-10-14T16:11:47.7651337Z [0m#0 building with "default" instance using docker driver
+2026-10-14T16:11:47.7652685Z 
+2026-10-14T16:11:47.7653066Z #1 [internal] load build definition from Dockerfile
+2026-10-14T16:11:47.7653355Z #1 transferring dockerfile: 524B done
+2026-10-14T16:11:47.7653618Z #1 DONE 0.0s
+2026-10-14T16:11:47.7653845Z 
+2026-10-14T16:11:47.7654158Z #2 [internal] load metadata for docker.io/library/golang:1.27-bookworm
+2026-10-14T16:11:48.3783293Z #2 DONE 0.8s
+2026-10-14T16:11:48.3784192Z 
+2026-10-14T16:11:48.3784604Z #3 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot
+2026-10-14T16:11:50.3288853Z #3 DONE 2.7s
+2026-10-14T16:11:50.4306227Z 
+2026-10-14T16:11:50.4307556Z #4 [internal] load .dockerignore
+2026-10-14T16:11:50.4307969Z #4 transferring context: 69B done
+2026-10-14T16:11:50.4308255Z #4 DONE 0.0s
+2026-10-14T16:11:50.4308500Z 
+2026-10-14T16:11:50.4308872Z #5 [build 1/7] FROM docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61
+2026-10-14T16:11:50.4309225Z #5 resolve docker.io/library/golang:1.27-bookworm@sha256:5cf287a799e6b94384bad13d16b14904c531f51ba65792237e122ce42b392f61 0.0s done
+2026-10-14T16:11:50.4309525Z #5 DONE 0.0s
+2026-10-14T16:11:50.4309798Z 
+2026-10-14T16:11:50.4310052Z #6 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+2026-10-14T16:11:50.4310382Z #6 resolve gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab 0.0s done
+2026-10-14T16:11:50.4310676Z #6 DONE 0.0s
+2026-10-14T16:11:50.4310931Z 
+2026-10-14T16:11:50.4311154Z #7 [internal] load build context
+2026-10-14T16:11:50.4311419Z #7 transferring context: 8.19kB done
+2026-10-14T16:11:50.4311649Z #7 DONE 0.0s
+2026-10-14T16:11:50.5758097Z 
+2026-10-14T16:11:50.5759040Z #8 [build 2/7] WORKDIR /src
+2026-10-14T16:11:50.5759383Z #8 CACHED
+2026-10-14T16:11:50.5759780Z 
+2026-10-14T16:11:50.5760114Z #9 [build 3/7] COPY go.mod go.sum ./
+2026-10-14T16:11:50.5760365Z #9 CACHED
+2026-10-14T16:11:50.5760620Z 
+2026-10-14T16:11:50.5760871Z #10 [build 4/7] RUN go mod download
+2026-10-14T16:11:50.5761144Z #10 CACHED
+2026-10-14T16:11:50.5761362Z 
+2026-10-14T16:11:50.5761585Z #11 [build 5/7] COPY cmd ./cmd
+2026-10-14T16:11:50.5761818Z #11 DONE 0.1s
+2026-10-14T16:11:50.7742733Z 
+2026-10-14T16:11:50.7744022Z #12 [build 6/7] COPY internal ./internal
+2026-10-14T16:11:50.7744384Z #12 DONE 0.0s
+2026-10-14T16:11:50.7744728Z 
+2026-10-14T16:11:50.7745014Z #13 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -X main.version=c7880cfcce33253025820a0549ee4b741e9d5da2" -o /hello ./cmd/hello
+2026-10-14T16:13:14.0682680Z #13 DONE 83.4s
+2026-10-14T16:13:14.5472244Z 
+2026-10-14T16:13:14.5472797Z #6 [stage-1 1/2] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+2026-10-14T16:13:14.7210049Z #6 CACHED
+2026-10-14T16:13:14.7210406Z 
+2026-10-14T16:13:14.7210470Z #14 [stage-1 2/2] COPY --from=build /hello /hello
+2026-10-14T16:13:14.7210527Z #14 DONE 0.0s
+2026-10-14T16:13:14.7210613Z 
+2026-10-14T16:13:14.7210657Z #15 exporting to image
+2026-10-14T16:13:14.7210720Z #15 exporting layers
+2026-10-14T16:13:14.9300237Z #15 exporting layers 0.4s done
+2026-10-14T16:13:15.0075680Z #15 exporting manifest sha256:bc7d3d9d76bc58554628c6e6a9998d14e9fddad37fc5638f9efd93f893ec6ca4 done
+2026-10-14T16:13:15.0076009Z #15 exporting config sha256:1dcb256eecb0889236f210c140a8bf1df1433064f2b7a5b7650254af4374d66b done
+2026-10-14T16:13:15.0076073Z #15 exporting attestation manifest sha256:c91580db67ecb14e742f327a1a700a6315d3652c91906e0fc55bb573472072d8 done
+2026-10-14T16:13:15.0076129Z #15 exporting manifest list sha256:e0fe40dae7e93598e21916cdfdb91ddb46107edc6095b153d7ac36602c3bee69 done
+2026-10-14T16:13:15.0076203Z #15 naming to docker.io/library/hello:ci done
+2026-10-14T16:13:15.0076282Z #15 unpacking to docker.io/library/hello:ci 0.0s done
+2026-10-14T16:13:15.0076328Z #15 DONE 0.4s
+2026-10-14T16:13:15.0200569Z   🐳  docker exec cmd=[node /var/run/act/workflow/hashfiles/index.js] user= workdir=
+2026-10-14T16:13:15.1006658Z ⭐ Run Post Go module + build cache (runner's LAN cache server)
+2026-10-14T16:13:15.1024536Z   🐳  docker exec cmd=[node /var/run/act/actions/c5/a2d8d80707995c2bae07bae83c69dee650f940ca16bd0d92c20b0e8ccc4326/dist/save/index.js] user= workdir=
+2026-10-14T16:13:15.4450557Z Cache hit occurred on the primary key go-b56cbce38208008fffd6f6a3a9fd3a30f7fa773760ef68acb486b0c4c285b50c, not saving cache.
+2026-10-14T16:13:15.4500811Z   ✅  Success - Post Go module + build cache (runner's LAN cache server)
+2026-10-14T16:13:15.4633837Z ⭐ Run Post actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T16:13:15.4651293Z   🐳  docker exec cmd=[node /var/run/act/actions/5c/53910f384ee5a8eb91dfcd74705b97a41dcf11b66c710c51433ba873b865ae/dist/index.js] user= workdir=
+2026-10-14T16:13:15.6255535Z [command]/usr/bin/git version
+2026-10-14T16:13:15.6309345Z git version 2.39.5
+2026-10-14T16:13:15.6345142Z   ⚙  ***
+2026-10-14T16:13:15.6369172Z Temporarily overriding HOME='/tmp/af3a2727-dbba-416d-941f-4cbff4fb2f4a' before making global git config changes
+2026-10-14T16:13:15.6369416Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T16:13:15.6376094Z [command]/usr/bin/git config --global --add safe.directory /workspace/apps/hello
+2026-10-14T16:13:15.6415545Z Removing SSH command configuration
+2026-10-14T16:13:15.6424478Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T16:13:15.6466457Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T16:13:15.6825925Z Removing HTTP extra header
+2026-10-14T16:13:15.6835010Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/git\.lab\.test\/\.extraheader
+2026-10-14T16:13:15.6896445Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/git\.lab\.test\/\.extraheader' && git config --local --unset-all 'http.https://git.lab.test/.extraheader' || :"
+2026-10-14T16:13:15.7812209Z Removing includeIf entries pointing to credentials config files
+2026-10-14T16:13:15.7838665Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T16:13:15.7956453Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T16:13:15.9316387Z   ✅  Success - Post actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-10-14T16:13:15.9909774Z 🏁  Job succeeded

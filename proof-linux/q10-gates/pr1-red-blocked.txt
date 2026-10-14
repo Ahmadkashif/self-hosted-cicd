@@ -1,0 +1,7 @@
+--- PR #1 head status
+{"state":"failure","statuses":[{"context":"pipeline / ci (pull_request)","status":"failure"},{"context":"pipeline / release (pull_request)","status":"success"}]}
+$ POST /repos/apps/hello/pulls/1/merge (as admin)
+{"message":"not allowed to merge [reason: Not all required status checks successful]","url":"https://git.lab.test/api/swagger"}
+
+HTTP 405
+--- mergeable flag: true

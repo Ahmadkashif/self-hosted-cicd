@@ -1,0 +1,15 @@
+agent-gate.sh pre-bash, direct invocation on Linux (repo state: HEAD has a failing unit test)
+git commit -n -m x               -> exit 2 BLOCK
+git commit -am x --no-verify     -> exit 2 BLOCK
+git push --no-verify             -> exit 2 BLOCK
+git push -n origin main          -> exit 2 BLOCK
+git log -n 3                     -> exit 0 allow
+git status                       -> exit 0 allow
+git push origin main             -> exit 2 BLOCK
+
+same, after resetting HEAD to the green base commit:
+git commit -n -m x               -> exit 2 BLOCK
+git push --no-verify             -> exit 2 BLOCK
+git push -n origin main          -> exit 0 allow
+git push origin main             -> exit 0 allow
+stop hook (green tree): exit 0

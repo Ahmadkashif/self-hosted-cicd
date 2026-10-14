@@ -1,0 +1,36 @@
+total 4
+-rw------- 1 ubuntu ubuntu 69 Oct 14 15:35 forge.env
+$ COMPOSE_PROFILES=postgres docker compose --env-file ../build/shared-verify/forge-host.env --env-file secrets/forge.env up -d
+ forgejo Pulling 
+ registry-mirror Pulling 
+ postgres Pulling 
+ caddy Pulling 
+ registry-mirror Pulled 
+ caddy Pulled 
+ postgres Pulled 
+ forgejo Pulled 
+ Network ci-forge_forge  Creating
+ Network ci-forge_forge  Created
+ Container ci-forge-registry-mirror-1  Creating
+ Container ci-forge-caddy-1  Creating
+ Container ci-forge-postgres-1  Creating
+ Container ci-forge-caddy-1  Created
+ Container ci-forge-registry-mirror-1  Created
+ Container ci-forge-postgres-1  Created
+ Container ci-forge-forgejo-1  Creating
+ Container ci-forge-forgejo-1  Created
+ Container ci-forge-registry-mirror-1  Starting
+ Container ci-forge-postgres-1  Starting
+ Container ci-forge-caddy-1  Starting
+ Container ci-forge-postgres-1  Started
+ Container ci-forge-registry-mirror-1  Started
+ Container ci-forge-caddy-1  Started
+ Container ci-forge-postgres-1  Healthy
+ Container ci-forge-forgejo-1  Starting
+ Container ci-forge-forgejo-1  Started
+forgejo health=healthy after 130s
+NAME                         IMAGE                                      STATUS                    PORTS
+ci-forge-caddy-1             caddy:2                                    Up 41 seconds             80/tcp, 2019/tcp, 443/udp, 10.77.0.10:443->443/tcp
+ci-forge-forgejo-1           codeberg.org/forgejo/forgejo:15-rootless   Up 31 seconds (healthy)   10.77.0.10:2222->2222/tcp, 3000/tcp
+ci-forge-postgres-1          postgres:17                                Up 41 seconds (healthy)   5432/tcp
+ci-forge-registry-mirror-1   registry:3                                 Up 41 seconds             5000/tcp

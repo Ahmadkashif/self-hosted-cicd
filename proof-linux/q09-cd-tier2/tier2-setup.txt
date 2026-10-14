@@ -1,0 +1,12 @@
+$ forgejo forgejo-cli actions register --name runner-deploy-shared-verify --scope infra/deploy --secret <same 40-hex>
+00000000-0000-0000-0000-00000000d1d1
+infra/deploy secret REGISTRY_TOKEN: 201
+infra/deploy secret APP_READ_TOKEN: 201
+infra/deploy secret DEPLOY_SSH_KEY: 201
+apps/hello delete secret REGISTRY_TOKEN: 204
+apps/hello delete secret DEPLOY_SSH_KEY: 204
+apps/hello secrets now: []
+infra/deploy secrets now: ["REGISTRY_TOKEN","APP_READ_TOKEN","DEPLOY_SSH_KEY"]
+4e27826 deploy repo: promote workflow, allow-list, pinned host keys
+time="2026-10-14T16:44:03Z" level=info msg="runner: runner-deploy-shared-verify, with version: v13.2.0, with labels: [deploy], ephemeral: false, declared successfully"
+time="2026-10-14T16:44:03Z" level=info msg="[poller] launched"
